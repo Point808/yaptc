@@ -4,6 +4,6 @@
         </div>
 
 </div>
-<script src="<?php echo $yaptc_incweb; ?>ui.js"></script>
+<script src="<?php echo $yaptc_libweb; ?>ui.js"></script>
 </body>
 </html>

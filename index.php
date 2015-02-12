@@ -23,7 +23,7 @@ $result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punchty
 $result->execute();
 $last = $result->fetchObject();
 echo "<h2 class=\"content-subhead\">Current Status</h2>";
-echo "<p>You have been Punched $last->type since $last->time.</p>";
+echo "<p>You have been Punched $last->type since " . date('g:i a \o\n M jS, Y', strtotime($last->time)) . ".</p>";
 echo "<h2 class=\"content-subhead\">Quick Punch</h2>";
 echo "<p>Clicking the button below will immediately enter a new punch for you depending on your current status.  Any notes you enter will be attached to the punch for your administrator to review.</p>";
 echo "<form class=\"pure-form pure-form-stacked\">";
