@@ -1,51 +1,40 @@
 <?php
-
-include 'lib/phpass-0.3/PasswordHash.php';
-
-/**
- * Don't use mysql_ functions. These are for MySQL 4.x and have been deprecated
- * since 2004. MySQLi is fine if you know you'll only be using MySQL databases.
- * PDO doesn't tie you to a specific RDBMS.
- */
-$sql = new PDO('mysql:host=localhost;dbname=yaptc;', 'yaptc', 'yaptcpassw0rd');
-
-// Create an array to catch any errors in the registration form.
-$errors = array();
-
-/**
- * Make sure the form has been submitted before trying to process it. This is
- * the single most common cause of 'undefined index' notices.
- */
+session_start();
+require_once("config.inc.php");
+$yaptc_pagename = "Users";
+require_once($yaptc_inc . "header.inc.php");
+require_once($yaptc_inc . "menu.inc.php");
+// Is user logged in?  If not, they shouldn't be here - kill all variables and redirect to login...
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['signature']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || $_SESSION['signature'] != md5($_SESSION['user_id'] . $_SERVER['HTTP_USER_AGENT']))
+{
+session_start();
+session_unset();
+session_destroy();
+header ("Refresh:3; url=login.php", true, 303);
+echo "<h2 class=\"content-subhead\">You are not logged in!!!</h2>";
+}
+else
+{
+//********** BEGIN CONTENT **********//
+require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 if (!empty($_POST))
 {
-    // First check that required fields have been filled in.
     if (empty($_POST['username']))
     {
-        $errors['username'] = "Username cannot be empty.";
+        echo "Username cannot be empty.";
     }
-
-    // OPTIONAL
-    // Restrict usernames to alphanumeric plus space, dot, dash, and underscore.
-    /*
     if (preg_match('/[^a-zA-Z0-9 .-_]/', $_POST['username']))
     {
-        $errors['username'] = "Username contains illegal characters.";
+        echo "Username contains illegal characters.";
     }
-    */
-
     if (empty($_POST['password']))
     {
-        $errors['password'] = "Password cannot be empty.";
+        echo "Password cannot be empty.";
     }
-
-    /**
-     * Note there's no upper limit to password length.
-     */
     if (strlen($_POST['password']) < 8)
     {
-        $errors['password'] = "Password must be at least 8 charcaters.";
+        echo "Password must be at least 8 charcaters.";
     }
-
     // OPTIONAL
     // Force passwords to contain at least one number and one special character.
     /*
@@ -58,21 +47,18 @@ if (!empty($_POST))
         $errors['password'] = "Password must contain at least one special character.";
     }
     */
-
     if (empty($_POST['password_confirm']))
     {
-        $errors['password_confirm'] = "Please confirm password.";
+        echo "Please confirm password.";
     }
-
     if ($_POST['password'] != $_POST['password_confirm'])
     {
-        $errors['password'] = "Passwords do not match.";
+        echo "Passwords do not match.";
     }
-
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if (!$email)
     {
-        $errors['email'] = "Not a valid email address.";
+        echo "Not a valid email address.";
     }
 
     /**
@@ -102,11 +88,11 @@ if (!empty($_POST))
     {
         if ($existing->username == $_POST['username'])
         {
-            $errors['username'] = "That username is already in use.";
+        echo "That username is already in use.";
         }
         if ($existing->email == $email)
         {
-            $errors['email'] = "That email address is already in use.";
+        echo "That email address is already in use.";
         }
     }
 }
@@ -128,13 +114,14 @@ if (!empty($_POST) && empty($errors))
      * prepared statements, be sure to escape your data before passing it to
      * your query.
      */
-    $query = "INSERT INTO users (username, password, email, created)
-              VALUES (:username, :password, :email, NOW())";
+    $query = "INSERT INTO users (username, password, email, created, usertype)
+              VALUES (:username, :password, :email, NOW(), :usertype)";
     $stmt = $sql->prepare($query);
     $success = $stmt->execute(array(
         ':username' => $_POST['username'],
         ':password' => $password,
         ':email'    => $_POST['email'],
+        ':usertype'    => $_POST['usertype'],
     ));
 
     if ($success)
@@ -143,7 +130,7 @@ if (!empty($_POST) && empty($errors))
     }
     else
     {
-        $errors['registration'] = "Account could not be created. Please try again later.";
+        echo "Account could not be created. Please try again later.";
     }
 }
 
@@ -191,9 +178,17 @@ if (!empty($_POST) && empty($errors))
                 <span class="error">
                     <?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
                 </span><br />
-
+                <input type="hidden" name="usertype" value="00000000001"/>
                 <input type="submit" value="Submit" />
             </fieldset>
         </form>
     </body>
 </html>
+<?php
+
+
+}
+
+//********** END CONTENT **********//
+require_once($yaptc_inc . "footer.inc.php");
+?>

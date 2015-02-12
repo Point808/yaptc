@@ -25,8 +25,8 @@
 
               echo '<li'; if ($yaptc_pagename=='Home') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="index.php">Home</a></li>';
               echo '<li'; if ($yaptc_pagename=='Profile') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="profile.php">Profile</a></li>';
-              echo '<li'; if ($yaptc_pagename=='Time') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="time.php">Time</a></li>';
-              echo '<li'; if ($yaptc_pagename=='Dashboard') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="dashboard.php">Dashboard</a></li>';
+              echo '<li'; if ($yaptc_pagename=='Punch Log') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="punchlog.php">Punch Log</a></li>';
+              echo '<li'; if ($yaptc_pagename=='Users') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="users.php">Users</a></li>';
               echo '<li'; if ($yaptc_pagename=='Reports') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="reports.php">Reports</a></li>';
               echo '<li'; if ($yaptc_pagename=='Logout') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="logout.php">Logout</a></li>';
 }

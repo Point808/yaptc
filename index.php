@@ -4,8 +4,6 @@ require_once("config.inc.php");
 $yaptc_pagename = "Home";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-//********** BEGIN CONTENT **********//
-
 // Is user logged in?  If not, they shouldn't be here - kill all variables and redirect to login...
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['signature']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || $_SESSION['signature'] != md5($_SESSION['user_id'] . $_SERVER['HTTP_USER_AGENT']))
 {
@@ -17,38 +15,68 @@ echo "<h2 class=\"content-subhead\">You are not logged in!!!</h2>";
 }
 else
 {
-
+//********** BEGIN CONTENT **********//
 $userid = $_SESSION['user_id'];
-$result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punchtypes.id as typeid, punchtypes.punchname as type, punches.time as time, punches.notes as notes, punches.modified as modified FROM punches INNER JOIN users ON punches.userid = users.id INNER JOIN punchtypes ON punches.punchtypeid = punchtypes.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
+$result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
 $result->execute();
 $last = $result->fetchObject();
 echo "<h2 class=\"content-subhead\">Current Status</h2>";
-echo "<p>You have been Punched $last->type since " . date('g:i a \o\n M jS, Y', strtotime($last->time)) . ".</p>";
+if(!isset($last->user))
+{
+echo "<p>You do not appear to have any punches on record.</p>";
+$status = "Out";
+}
+else
+{
+if (!empty($last->outtime)) { $status = "Out"; $statustime = $last->outtime; } else { $status = "In"; $statustime = $last->intime; $punchid = $last->punchid; $notes = $last->notes; }
+echo "<p>You have been Punched $status since " . date('g:i a \o\n M jS, Y', strtotime($statustime)) . ".</p>";
+}
 echo "<h2 class=\"content-subhead\">Quick Punch</h2>";
 echo "<p>Clicking the button below will immediately enter a new punch for you depending on your current status.  Any notes you enter will be attached to the punch for your administrator to review.</p>";
-echo "<form class=\"pure-form pure-form-stacked\">";
+echo "<form class=\"pure-form pure-form-stacked\" action=\"index.php\" method=\"post\">";
 echo "<fieldset>";
-echo "<input type=\"notes\" placeholder=\"Enter notes if needed\" maxlength=\"255\">";
+echo "<input class=\"pure-input-1\" type=\"text\" name=\"notes\" placeholder=\"Enter notes if needed\" maxlength=\"255\" value=\"$notes\">";
 echo "<div class=\"pure-controls\">";
-if ($last->typeid=="00000000001") {
-  //$result = $sql->prepare("INSERT INTO punches (userid, punchtypeid, time) VALUES ($userid, "00000000002", NOW())");
-  //$result->execute();
-  //$punch = $result->fetchObject();
-echo "<button type=\"submit\" class=\"pure-button button-xlarge button-success\">Punch OUT</button>";
+if ($status=="In") {
+echo "<button type=\"submit\" class=\"pure-button button-xlarge button-success pure-button-disabled\">Punch IN</button>";
+echo "<button type=\"submit\" class=\"pure-button button-xlarge button-error\">Punch OUT</button>";
   } else {
 echo "<button type=\"submit\" class=\"pure-button button-xlarge button-success\">Punch IN</button>";
+echo "<button type=\"submit\" class=\"pure-button button-xlarge button-error pure-button-disabled\">Punch OUT</button>";
 }
 echo "</div>";
+
+    if (!empty($_POST)) {
+    if (!empty($_POST['notes'])) {
+$p_notes = $_POST['notes'];
+} else {
+$p_notes = "";
+}
+if ($status=="In") {
+$query = "UPDATE punches SET outtime = NOW(), notes = :p_notes WHERE id = :p_punchid";
+   $stmt = $sql->prepare($query);
+$stmt->execute(array(
+        ':p_punchid'    => $punchid,
+        ':p_notes'    => $p_notes,
+    ));
+  } else {
+$query = "INSERT INTO punches (userid, notes, intime) VALUES (:p_userid, :p_notes, NOW())";
+   $stmt = $sql->prepare($query);
+$stmt->execute(array(
+        ':p_userid' => $_SESSION['user_id'],
+        ':p_notes'    => $p_notes,
+    ));
+}
+
+header('Location: '.$_SERVER['PHP_SELF']);
+exit;
+}
+
 echo "</fieldset>";
 echo "</form>";
 
 
-
-
-
-
-  }
-
 //********** END CONTENT **********//
+}
 require_once($yaptc_inc . "footer.inc.php");
 ?>

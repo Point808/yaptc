@@ -13,5 +13,13 @@
 <!--[if gt IE 8]><!-->
 <link rel="stylesheet" href="<?php echo $yaptc_incweb; ?>side-menu.css">
 <!--<![endif]-->
+
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="<?php echo $yaptc_libweb; ?>pure/grids-responsive-old-ie-min.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="<?php echo $yaptc_libweb; ?>pure/grids-responsive-min.css">
+<!--<![endif]-->
+
 </head>
 <body>
