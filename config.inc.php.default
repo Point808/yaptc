@@ -1,0 +1,20 @@
+<?php
+//********** PLEASE EDIT THE FOLLOWING **********//
+// Paths and directories must include a trailing slash!!!
+  $yaptc_dirpath = '/usr/share/nginx/html/yaptc/';   // Absolute directory path to the root of this program
+  $yaptc_webpath = 'http://server-ip/yaptc/';        // Absolute URL to the root of this program
+  $yaptc_appname = 'Timecard System';                // Program name to display in title bar
+  $yaptc_company = 'Widgets, Inc.';                  // Your company name
+  $sql = new PDO('mysql:host=localhost;dbname=your_database;', 'your_user', 'your_password');  // Database connection string
+
+
+
+//********** NO NEED TO EDIT PAST HERE **********//
+  $_SESSION['yaptc_dir'] = $yaptc_dirpath; 
+  $_SESSION['yaptc_url'] = $yaptc_webpath;
+  $yaptc_inc = $yaptc_dirpath . 'includes/';
+  $yaptc_incweb = $yaptc_webpath . 'includes/';
+  $yaptc_lib = $yaptc_dirpath . 'lib/';
+  $yaptc_libweb = $yaptc_webpath . 'lib/';
+?>
+
