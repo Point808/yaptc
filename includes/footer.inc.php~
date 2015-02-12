@@ -1,0 +1,8 @@
+<p>
+<center>Server Time: <span id="date_time"></span><script type="text/javascript">window.onload = date_time('date_time');</script></center>
+</p>
+</div>
+</div>
+<script src="<?php echo $yaptc_incweb; ?>ui.js"></script>
+</body>
+</html>

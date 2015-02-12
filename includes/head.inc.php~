@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="YAPTC Timecard system is a time recording application for small businesses.">
+    <title><?php echo $yaptc_appname . " : " . $yaptc_pagename; ?></title>
+    <link rel="stylesheet" href="<?php echo $yaptc_incweb; ?>pure/pure.css">
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href="css/layouts/side-menu-old-ie.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" href="css/layouts/side-menu.css">
+    <!--<![endif]-->
+
+  </head>
+  <body>
