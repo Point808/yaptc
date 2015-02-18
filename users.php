@@ -16,6 +16,43 @@ echo "<h2 class=\"content-subhead\">You are not logged in!!!</h2>";
 else
 {
 //********** BEGIN CONTENT **********//
+echo "<h2 class=\"content-subhead\">System Users</h2>";
+echo "<p>Editing to be added, for now, it doesn;t exist</p>";
+$result = $sql->prepare("SELECT users.id as userid, users.username as username, users.email as email, users.created as created, users.firstname as firstname, users.lastname as lastname, users.usertype as usertypeid, usertypes.typename as usertype
+FROM yaptc.users
+INNER JOIN usertypes ON users.usertype = usertypes.id
+ORDER BY users.lastname ASC;");
+$result->execute();
+echo '<table class="pure-table">';
+echo '<thead>';
+echo '<tr>';
+echo '<th>First Name</th>';
+echo '<th>Last Name</th>';
+echo '<th>Username</th>';
+echo '<th>Email</th>';
+echo '<th>Created</th>';
+echo '<th>User Type</th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
+while ($row = $result->fetch(PDO::FETCH_ASSOC))
+{
+echo "<tr>";
+echo "<td>" . $row['firstname'] . "</td>";
+echo "<td>" . $row['lastname'] . "</td>";
+echo "<td>" . $row['username'] . "</td>";
+echo "<td>" . $row['email'] . "</td>";
+echo "<td>" . $row['created'] . "</td>";
+echo "<td>" . $row['usertype'] . "</td>";
+echo "</tr>";
+}
+echo '</tbody>';
+echo '</table>';
+
+
+echo "<h2 class=\"content-subhead\">Add User</h2>";
+echo "<p>Use the following form to add users to the system.  Passwords must be 8+ characters.  Email must be filled out, and username must be unique.</p>";
+
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 if (!empty($_POST))
 {
