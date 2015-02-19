@@ -4,51 +4,10 @@ require_once("config.inc.php");
 $yaptc_pagename = "Users";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-// Is user logged in?  If not, they shouldn't be here - kill all variables and redirect to login...
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['signature']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || $_SESSION['signature'] != md5($_SESSION['user_id'] . $_SERVER['HTTP_USER_AGENT']))
-{
-session_start();
-session_unset();
-session_destroy();
-header ("Refresh:3; url=login.php", true, 303);
-echo "<h2 class=\"content-subhead\">You are not logged in!!!</h2>";
-}
-else
-{
+if (getSessionStatus() == false) {
+killSession();
+} else {
 //********** BEGIN CONTENT **********//
-echo "<h2 class=\"content-subhead\">System Users</h2>";
-echo "<p>Editing to be added, for now, it doesn;t exist</p>";
-$result = $sql->prepare("SELECT users.id as userid, users.username as username, users.email as email, users.created as created, users.firstname as firstname, users.lastname as lastname, users.usertype as usertypeid, usertypes.typename as usertype
-FROM yaptc.users
-INNER JOIN usertypes ON users.usertype = usertypes.id
-ORDER BY users.lastname ASC;");
-$result->execute();
-echo '<table class="pure-table">';
-echo '<thead>';
-echo '<tr>';
-echo '<th>First Name</th>';
-echo '<th>Last Name</th>';
-echo '<th>Username</th>';
-echo '<th>Email</th>';
-echo '<th>Created</th>';
-echo '<th>User Type</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
-while ($row = $result->fetch(PDO::FETCH_ASSOC))
-{
-echo "<tr>";
-echo "<td>" . $row['firstname'] . "</td>";
-echo "<td>" . $row['lastname'] . "</td>";
-echo "<td>" . $row['username'] . "</td>";
-echo "<td>" . $row['email'] . "</td>";
-echo "<td>" . $row['created'] . "</td>";
-echo "<td>" . $row['usertype'] . "</td>";
-echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
-
 
 echo "<h2 class=\"content-subhead\">Add User</h2>";
 echo "<p>Use the following form to add users to the system.  Passwords must be 8+ characters.  Email must be filled out, and username must be unique.</p>";
@@ -58,19 +17,19 @@ if (!empty($_POST))
 {
     if (empty($_POST['username']))
     {
-        echo "Username cannot be empty.";
+        $errors['username'] = "Username cannot be empty.";
     }
     if (preg_match('/[^a-zA-Z0-9 .-_]/', $_POST['username']))
     {
-        echo "Username contains illegal characters.";
+        $errors['username'] = "Username contains illegal characters.";
     }
     if (empty($_POST['password']))
     {
-        echo "Password cannot be empty.";
+        $errors['password'] = "Password cannot be empty.";
     }
     if (strlen($_POST['password']) < 8)
     {
-        echo "Password must be at least 8 charcaters.";
+        $errors['password'] = "Password must be at least 8 charcaters.";
     }
     // OPTIONAL
     // Force passwords to contain at least one number and one special character.
@@ -86,16 +45,16 @@ if (!empty($_POST))
     */
     if (empty($_POST['password_confirm']))
     {
-        echo "Please confirm password.";
+        $errors['password_confirm'] = "Please confirm password.";
     }
     if ($_POST['password'] != $_POST['password_confirm'])
     {
-        echo "Passwords do not match.";
+        $errors['password_confirm'] = "Passwords do not match.";
     }
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if (!$email)
     {
-        echo "Not a valid email address.";
+        $errors['email'] = "Not a valid email address.";
     }
 
     /**
@@ -125,11 +84,11 @@ if (!empty($_POST))
     {
         if ($existing->username == $_POST['username'])
         {
-        echo "That username is already in use.";
+        $errors['username'] = "That username is already in use.";
         }
         if ($existing->email == $email)
         {
-        echo "That email address is already in use.";
+        $errors['email'] = "That email address is already in use.";
         }
     }
 }
@@ -151,10 +110,12 @@ if (!empty($_POST) && empty($errors))
      * prepared statements, be sure to escape your data before passing it to
      * your query.
      */
-    $query = "INSERT INTO users (username, password, email, created, usertype)
-              VALUES (:username, :password, :email, NOW(), :usertype)";
+    $query = "INSERT INTO users (firstname, lastname, username, password, email, created, usertype)
+              VALUES (:firstname, :lastname, :username, :password, :email, NOW(), :usertype)";
     $stmt = $sql->prepare($query);
     $success = $stmt->execute(array(
+        ':firstname' => $_POST['firstname'],
+        ':lastname' => $_POST['lastname'],
         ':username' => $_POST['username'],
         ':password' => $password,
         ':email'    => $_POST['email'],
@@ -190,33 +151,34 @@ if (!empty($_POST) && empty($errors))
         <p class="error"><?php echo $errors['registration']; ?></p>
         <?php endif; ?>
 
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <fieldset id="registration">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" />
-                <span class="error">
+        <form class="pure-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <fieldset id="registration" class="pure-group">
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-md-1-2">
+                <input type="text" class="pure-input" id="firstname" name="firstname" placeholder="First Name" required />
+                    <?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
+                <input type="text" class="pure-input" id="lastname" name="lastname" placeholder="Last Name" required />
+                    <?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
+                <input type="text" class="pure-input" id="username" name="username" placeholder="Username" required />
                     <?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
-                </span><br />
-
-                <label for="email">Email Address</label>
-                <input type="text" id="email" name="email" />
-                <span class="error">
+</div>
+            <div class="pure-u-1 pure-u-md-1-2">
+                <input type="text" class="pure-input" id="email" name="email" placeholder="Email" />
                     <?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
-                </span><br />
-
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" />
-                <span class="error">
+                <input type="password" class="pure-input" id="password" name="password" placeholder="Password" required />
                     <?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
-                </span><br />
-
-                <label for="password_confirm">Confirm Password</label>
-                <input type="password" id="password_confirm" name="password_confirm" />
-                <span class="error">
+                <input type="password" class="pure-input" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
                     <?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
-                </span><br />
-                <input type="hidden" name="usertype" value="00000000001"/>
-                <input type="submit" value="Submit" />
+</div>
+            <div class="pure-u-1 pure-u-md-1">
+                <label for="usertype">Access Level</label>
+                <select id="usertype" name="usertype" required />
+<option value="00000000002">User</option>
+<option value="00000000001">Administrator</option>
+</select>
+                    <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
+<button type="submit" class="pure-button button-success" value="Submit">Create</button>
+</div>
             </fieldset>
         </form>
     </body>
@@ -225,6 +187,40 @@ if (!empty($_POST) && empty($errors))
 
 
 }
+
+echo "<h2 class=\"content-subhead\">User List</h2>";
+echo "<p>Current users.  To edit, select the edit button in the right column.</p>";
+$result = $sql->prepare("SELECT users.id as userid, users.username as username, users.email as email, users.created as created, users.firstname as firstname, users.lastname as lastname, users.usertype as usertypeid, usertypes.typename as usertype
+FROM yaptc.users
+INNER JOIN usertypes ON users.usertype = usertypes.id
+ORDER BY users.lastname ASC;");
+$result->execute();
+echo '<table class="pure-table">';
+echo '<thead>';
+echo '<tr>';
+echo '<th>First Name</th>';
+echo '<th>Last Name</th>';
+echo '<th>Username</th>';
+echo '<th>Email</th>';
+echo '<th>Created</th>';
+echo '<th>User Type</th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
+while ($row = $result->fetch(PDO::FETCH_ASSOC))
+{
+echo "<tr>";
+echo "<td>" . $row['firstname'] . "</td>";
+echo "<td>" . $row['lastname'] . "</td>";
+echo "<td>" . $row['username'] . "</td>";
+echo "<td>" . $row['email'] . "</td>";
+echo "<td>" . $row['created'] . "</td>";
+echo "<td>" . $row['usertype'] . "</td>";
+echo "</tr>";
+}
+echo '</tbody>';
+echo '</table>';
+
 
 //********** END CONTENT **********//
 require_once($yaptc_inc . "footer.inc.php");

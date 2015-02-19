@@ -11,6 +11,7 @@
           <ul>
             <?php
 
+
 // Get login status and access level
 if (getSessionStatus() == true) { $userLogged = true; $userAccess = getSessionAccess($sql); } else { $userLogged = false; $userAccess = ""; }
 
@@ -53,7 +54,7 @@ if ($userLogged == false) {
 
         <div class="header">
           <h1><?php echo $yaptc_pagename; ?></h1>
-          <h2><?php if (isset($_SESSION['user_id'])) {echo "User: " . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];} else {echo "Please log in to use the timecard system";}?></h2>
+          <h2><?php if (isset($_SESSION['user_id'])) {echo "Logged as: " . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];} else {echo "Please log in to use the timecard system";}?></h2>
           <h4><?php if (!empty($adminmessage)) {echo "<div class=\"successmessage\">" . $adminmessage . "</div>"; } ?></h4>
         </div>
 
