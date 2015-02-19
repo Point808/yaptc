@@ -4,17 +4,9 @@ require_once("config.inc.php");
 $yaptc_pagename = "Reports";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-// Is user logged in?  If not, they shouldn't be here - kill all variables and redirect to login...
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['signature']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || $_SESSION['signature'] != md5($_SESSION['user_id'] . $_SERVER['HTTP_USER_AGENT']))
-{
-session_start();
-session_unset();
-session_destroy();
-header ("Refresh:3; url=login.php", true, 303);
-echo "<h2 class=\"content-subhead\">You are not logged in!!!</h2>";
-}
-else
-{
+if (getSessionStatus() == false) {
+killSession();
+} else {
 //********** BEGIN CONTENT **********//
 
 echo "<h2 class=\"content-subhead\">Punch History</h2>";
