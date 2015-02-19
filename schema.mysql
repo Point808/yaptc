@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `yaptc` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `yaptc`;
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (i686)
 --
--- Host: localhost    Database: yaptc
+-- Host: 127.0.0.1    Database: yaptc
 -- ------------------------------------------------------
 -- Server version	5.5.41-0ubuntu0.14.04.1
 
@@ -63,7 +65,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `usertype` (`usertype`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`usertype`) REFERENCES `usertypes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +74,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (00000000001,'jnorth','$2a$08$XNSfZQrDFRvQBwhAbt1t1.sq1DujMbcsaueWVczN8Jgb/VynnBHE6','josh.north@point808.com','2015-02-10 23:09:48','Josh','North',00000000001),(00000000003,'testuser','$2a$08$9Q7brl4YuNY9nwTD4L00Te6FKvXbjDRwNIMbVEUG0dSCVgKYatLO2','test@point808.com','2015-02-12 08:27:48','Test','User',00000000001);
+INSERT INTO `users` VALUES (00000000001,'admin','$2a$08$6WUE0S4UEYJO5.GMoCzjAO.W8y4Gage/tC7.SWEppWxwQO2ccjMgy','admin@example.com','2015-02-18 19:50:31','System','Administrator',00000000001);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,6 +101,10 @@ LOCK TABLES `usertypes` WRITE;
 INSERT INTO `usertypes` VALUES (00000000001,'Administrator'),(00000000002,'User');
 /*!40000 ALTER TABLE `usertypes` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'yaptc'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -109,4 +115,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-02-12 15:25:09
+-- Dump completed on 2015-02-18 19:57:14

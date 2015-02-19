@@ -16,4 +16,27 @@
   $yaptc_incweb = $yaptc_webpath . 'includes/';
   $yaptc_lib = $yaptc_dirpath . 'lib/';
   $yaptc_libweb = $yaptc_webpath . 'lib/';
+
+function getSessionStatus(){
+  if (!isset($_SESSION['user_id']) || !isset($_SESSION['signature']) || !isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] != true || $_SESSION['signature'] != md5($_SESSION['user_id'] . $_SERVER['HTTP_USER_AGENT']))
+  {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function getSessionAccess($sql){
+  if (isset($_SESSION['user_id']))
+  {
+    $query3 = "SELECT users.id as userid, usertypes.typename AS usertype FROM users, usertypes WHERE users.id = :id";
+    $stmt3 = $sql->prepare($query3);
+    $stmt3->execute(array(':id' => $_SESSION['user_id']));
+    $user3 = $stmt3->fetchObject();
+    return $user3->usertype;
+  }
+}
+
+
+
 ?>
