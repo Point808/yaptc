@@ -188,7 +188,7 @@ echo "<td>" . $row['usertype'] . "</td>";
 ?>
 <td><form method="post" onsubmit="return confirm('WARNING! - WARNING! - WARNING! This will delete the user and ALL punches associated with them.  There is NO UNDO!  Are you sure?')">
 <input type="hidden" name="_METHOD" value="DELETE">
-<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button button class="button-error pure-button" name="deluser" value="deluser" type="submit">Delete</button></form></td>
+<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button button class="button-error pure-button" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>>Delete</button></form></td>
 </tr>
 <?php } ?>
 </tbody>
