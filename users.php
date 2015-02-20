@@ -13,7 +13,7 @@ echo "<h2 class=\"content-subhead\">Add User</h2>";
 echo "<p>Use the following form to add users to the system.  Passwords must be 8+ characters.  Email must be filled out, and username must be unique.</p>";
 
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
-if (!empty($_POST))
+if (!empty($_POST['newuser']))
 {
     if (empty($_POST['username']))
     {
@@ -97,7 +97,7 @@ if (!empty($_POST))
  * If the form has been submitted and no errors were detected, we can proceed
  * to account creation.
  */
-if (!empty($_POST) && empty($errors))
+if (!empty($_POST['newuser']) && empty($errors))
 {
     /**
      * Hash password before storing in database
@@ -177,16 +177,33 @@ if (!empty($_POST) && empty($errors))
 <option value="00000000001">Administrator</option>
 </select>
                     <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
-<button type="submit" class="pure-button button-success" value="Submit">Create</button>
+<button type="submit" class="pure-button button-success" value="Submit" name="newuser">Create</button>
 </div>
             </fieldset>
         </form>
-    </body>
-</html>
+
 <?php
 
 
 }
+
+
+// delete user only if submitted by button
+if (!empty($_POST['deluser']))
+{
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE' || ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_METHOD'] == 'DELETE')) {
+    $deleteid = (int) $_POST['deleteid'];
+$deletequery = $sql->prepare("DELETE FROM users WHERE users.id=$deleteid");
+$deletequery->execute();
+echo "user deleted!";
+    if ($deletequery !== false) {
+
+        header("Location: {$_SERVER['PHP_SELF']}", true, 303);
+        exit;
+    }
+}
+}
+
 
 echo "<h2 class=\"content-subhead\">User List</h2>";
 echo "<p>Current users.  To edit, select the edit button in the right column.</p>";
@@ -204,6 +221,7 @@ echo '<th>Username</th>';
 echo '<th>Email</th>';
 echo '<th>Created</th>';
 echo '<th>User Type</th>';
+echo '<th>Actions</th>';
 echo '</tr>';
 echo '</thead>';
 echo '<tbody>';
@@ -216,6 +234,10 @@ echo "<td>" . $row['username'] . "</td>";
 echo "<td>" . $row['email'] . "</td>";
 echo "<td>" . $row['created'] . "</td>";
 echo "<td>" . $row['usertype'] . "</td>";
+?><td><form method="post" onsubmit="return confirm('Are you sure you want to delete this user?')">
+<input type="hidden" name="_METHOD" value="DELETE">
+<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button name="deluser" value="deluser" type="submit">Delete</button></form></td>
+<?php
 echo "</tr>";
 }
 echo '</tbody>';

@@ -35,7 +35,7 @@ if ($_POST['reporttype'] == "Hours per week per user") {
 $query = "SELECT
 YEAR(punches.intime) AS g_year,
 WEEK(punches.intime) AS g_week,
-SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600) AS punchhours,
+ROUND(SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600),2) AS punchhours,
   punches.id as punchid,
   users.id as user,
   users.username as username,
@@ -79,8 +79,8 @@ echo '</table>';
 elseif ($_POST['reporttype'] == "Hours per month per user") {
 $query = "SELECT
 YEAR(punches.intime) AS g_year,
-MONTH(punches.intime) AS g_month,
-SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600) AS punchhours,
+MONTHNAME(punches.intime) AS g_month,
+ROUND(SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600),2) AS punchhours,
   punches.id as punchid,
   users.id as user,
   users.username as username,
