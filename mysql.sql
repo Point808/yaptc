@@ -32,8 +32,8 @@ CREATE TABLE `punches` (
   `intime` datetime NOT NULL,
   `outtime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `userid` (`userid`),
-  CONSTRAINT `punches_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
+  KEY `punches_ibfk_1` (`userid`),
+  CONSTRAINT `punches_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,9 +63,9 @@ CREATE TABLE `users` (
   `lastname` varchar(50) DEFAULT NULL,
   `usertype` int(11) unsigned zerofill NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `usertype` (`usertype`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`usertype`) REFERENCES `usertypes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  KEY `users_ibfk_1` (`usertype`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`usertype`) REFERENCES `usertypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,10 +101,6 @@ LOCK TABLES `usertypes` WRITE;
 INSERT INTO `usertypes` VALUES (00000000001,'Administrator'),(00000000002,'User');
 /*!40000 ALTER TABLE `usertypes` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'yaptc'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -115,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-02-18 19:57:14
+-- Dump completed on 2015-02-20  1:54:16

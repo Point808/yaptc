@@ -4,129 +4,56 @@ require_once("config.inc.php");
 $yaptc_pagename = "Reports";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-if (getSessionStatus() == false) {
+if (getSessionStatus() == false):
 killSession();
-} else {
-//********** BEGIN CONTENT **********//
+else:
+//********** BEGIN CONTENT **********// ?>
 
-echo "<h2 class=\"content-subhead\">Punch History</h2>";
-echo "<p>Below is your company punch history.  The below drop-down can be used to select pre-configured reports.  Other reports are currently being written.</p>";
+<h2 class="content-subhead">Punch History</h2>
+<p>Below is your company punch history.  The below drop-down can be used to select pre-configured reports.  Other reports are currently being written.</p>
+<form class="pure-form pure-form-stacked" action="reports.php" method="post">
+<fieldset>
+<div class="pure-g">
+<div class="pure-u-1">
+<label for="reporttype">Report Type</label>
+<select name="reporttype" class="pure-input-1-2">
+<?php if (isset($_POST['reporttype'])): ?>
+    <option value="<?php echo $_POST['reporttype']; ?>"><?php echo $_POST['reporttype']; ?></option>
+    <option>----------</option>
+<?php else: ?>
+    <option></option>
+<?php endif; ?>
+<option value="Hours per week per user">Hours per week per user</option>
+<option value="Hours per month per user">Hours per month per user</option>
+</select>
+</div>
+</div>
+<button type=\"submit\" class=\"pure-button pure-button-primary\">Submit</button>
+</fieldset>
+</form>
+
+<?php if (isset($_POST['reporttype'])): ?>
+    <?php if ($_POST['reporttype'] == "Hours per week per user"): ?><table class="pure-table">
+        <thead><tr><th>Year</th><th>Week#</th><th>Username</th><th>Hours</th></tr></thead>
+        <tbody><?php foreach (reportWeeklyByUser($yaptc_db) as $row): ?>
+        <tr><td><?php echo $row['g_year']; ?></td><td><?php echo $row['g_week']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['punchhours']; ?></td></tr><?php endforeach; ?>
+        </tbody>
+        </table>
+    <?php endif; ?>
+    <?php if ($_POST['reporttype'] == "Hours per month per user"): ?><table class="pure-table">
+        <thead><tr><th>Year</th><th>Month</th><th>Username</th><th>Hours</th></tr></thead>
+        <tbody><?php foreach (reportMonthlyByUser($yaptc_db) as $row): ?>
+        <tr><td><?php echo $row['g_year']; ?></td><td><?php echo $row['g_month']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['punchhours']; ?></td></tr><?php endforeach; ?>
+        </tbody>
+        </table>
+    <?php endif; ?>
+<?php else: ?>
+    <p>No query to display.  Please select from the dropdown above...</p>
+<?php endif; ?>
 
 
-echo "<form class=\"pure-form pure-form-stacked\" action=\"reports.php\" method=\"post\">";
-echo "    <fieldset>";
-echo "        <div class=\"pure-g\">";
-echo "             <div class=\"pure-u-1\">";
-echo "                <label for=\"reporttype\">Report Type</label>";
-echo "                <select name=\"reporttype\" class=\"pure-input-1-2\">";
-if (isset($_POST['reporttype'])) { echo "<option value=\"" . $_POST['reporttype'] . "\">" . $_POST['reporttype'] . "</option><option>----------</option>";}
-else { echo "<option></option>";}
-echo "                    <option value=\"Hours per week per user\">Hours per week per user</option>";
-echo "                    <option value=\"Hours per month per user\">Hours per month per user</option>";
-echo "                </select>";
-echo "            </div>";
-echo "        </div>";
-echo "        <button type=\"submit\" class=\"pure-button pure-button-primary\">Submit</button>";
-echo "    </fieldset>";
-echo "</form>";
 
-if (isset($_POST['reporttype'])) {
-if ($_POST['reporttype'] == "Hours per week per user") {
-$query = "SELECT
-YEAR(punches.intime) AS g_year,
-WEEK(punches.intime) AS g_week,
-ROUND(SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600),2) AS punchhours,
-  punches.id as punchid,
-  users.id as user,
-  users.username as username,
-  users.firstname as firstname,
-  users.lastname as lastname,
-  punches.intime as intime,
-  punches.outtime as outtime,
-  punches.notes as notes,
-  punches.modified as modified
-  FROM punches
-INNER JOIN users ON punches.userid = users.id
-GROUP BY g_year, g_week, users.username;";
-$stmt = $sql->prepare($query);
-$stmt->execute();
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-//set up table header and open table
-echo '<table class="pure-table">';
-echo '<thead>';
-echo '<tr>';
-echo '<th>Year</th>';
-echo '<th>Week#</th>';
-echo '<th>Username</th>';
-echo '<th>Hours</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
-
-// $rows is an array containing all records...
-foreach ($rows as $row) {
-    echo "<tr>";
-    echo "<td>" . $row['g_year'] . "</td>";
-    echo "<td>" . $row['g_week'] . "</td>";
-    echo "<td>" . $row['username'] . "</td>";
-    echo "<td>" . $row['punchhours'] . "</td>";
-    echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
-}
-elseif ($_POST['reporttype'] == "Hours per month per user") {
-$query = "SELECT
-YEAR(punches.intime) AS g_year,
-MONTHNAME(punches.intime) AS g_month,
-ROUND(SUM(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600),2) AS punchhours,
-  punches.id as punchid,
-  users.id as user,
-  users.username as username,
-  users.firstname as firstname,
-  users.lastname as lastname,
-  punches.intime as intime,
-  punches.outtime as outtime,
-  punches.notes as notes,
-  punches.modified as modified
-  FROM punches
-INNER JOIN users ON punches.userid = users.id
-GROUP BY g_year, g_month, users.username;";
-$stmt = $sql->prepare($query);
-$stmt->execute();
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-//set up table header and open table
-echo '<table class="pure-table">';
-echo '<thead>';
-echo '<tr>';
-echo '<th>Year</th>';
-echo '<th>Month</th>';
-echo '<th>Username</th>';
-echo '<th>Hours</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
-
-// $rows is an array containing all records...
-foreach ($rows as $row) {
-    echo "<tr>";
-    echo "<td>" . $row['g_year'] . "</td>";
-    echo "<td>" . $row['g_month'] . "</td>";
-    echo "<td>" . $row['username'] . "</td>";
-    echo "<td>" . $row['punchhours'] . "</td>";
-    echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
-}
-else {
-  echo "no query";
-}
-} else { echo "no query"; }
-
-//********** END CONTENT **********//
-}
+<?php //********** END CONTENT **********//
+endif;
 require_once($yaptc_inc . "footer.inc.php");
 ?>

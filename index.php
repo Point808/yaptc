@@ -4,14 +4,20 @@ require_once("config.inc.php");
 $yaptc_pagename = "Home";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-if (getSessionStatus() == false) {
+if (getSessionStatus() == false):
 killSession();
-} else {
-//********** BEGIN CONTENT **********//
+else:
+//********** BEGIN CONTENT **********// ?>
 
+<?php
 $userid = $_SESSION['user_id'];
+
+
+
+
+
 // This is to get the current user status - in or out - and the notes and times associated for use in the form
-$result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
+$result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
     $result->execute();
     $last = $result->fetchObject();
     
@@ -75,7 +81,7 @@ $result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches
         // Is the user currently punched in?  If so, insert the punch out record, otherwise, insert a new punch in
         if ($status == "In") {
             $query = "UPDATE punches SET outtime = NOW(), notes = :p_notes WHERE id = :p_punchid";
-            $stmt  = $sql->prepare($query);
+            $stmt  = $yaptc_db->prepare($query);
             $stmt->execute(array(
                 ':p_punchid' => $punchid,
                 ':p_notes' => $p_notes
@@ -83,7 +89,7 @@ $result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches
         } //$status == "In"
         else {
             $query = "INSERT INTO punches (userid, notes, intime) VALUES (:p_userid, :p_notes, NOW())";
-            $stmt  = $sql->prepare($query);
+            $stmt  = $yaptc_db->prepare($query);
             $stmt->execute(array(
                 ':p_userid' => $_SESSION['user_id'],
                 ':p_notes' => $p_notes
@@ -97,9 +103,10 @@ $result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches
     // Close out the form...
     echo "</fieldset>";
     echo "</form>";
+?>    
     
-    
-    //********** END CONTENT **********//
-}
+
+<?php //********** END CONTENT **********//
+endif;
 require_once($yaptc_inc . "footer.inc.php");
 ?>

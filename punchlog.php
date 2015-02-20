@@ -13,7 +13,7 @@ $userid = $_SESSION['user_id'];
 $timenow = date('Y-m-d H:i');
 
 // This is to get the current user status - in or out - and the notes and times associated for use in the form
-$result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
+$result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
 $result->execute();
 $last = $result->fetchObject();
 
@@ -65,7 +65,7 @@ if (isset($_POST['punchtime'])) {
 // Is the user currently punched in?  If so, insert the punch out record, otherwise, insert a new punch in
 if ($status=="In") {
   $query = "UPDATE punches SET outtime = :p_punchtime, notes = :p_notes, modified = :p_modified WHERE id = :p_punchid";
-  $stmt = $sql->prepare($query);
+  $stmt = $yaptc_db->prepare($query);
   $stmt->execute(array(
         ':p_punchid'    => $punchid,
         ':p_notes'    => $p_notes,
@@ -74,7 +74,7 @@ if ($status=="In") {
     ));
   } else {
   $query = "INSERT INTO punches (userid, notes, intime, modified) VALUES (:p_userid, :p_notes, :p_punchtime, :p_modified)";
-  $stmt = $sql->prepare($query);
+  $stmt = $yaptc_db->prepare($query);
   $stmt->execute(array(
     ':p_userid' => $_SESSION['user_id'],
         ':p_notes'    => $p_notes,
@@ -94,7 +94,7 @@ echo "</form>";
 
 echo "<h2 class=\"content-subhead\">Punch History</h2>";
 echo "<p>Below is your full punch history, sorted newest to oldest.</p>";
-$result = $sql->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes, punches.modified as modified FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC");
+$result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes, punches.modified as modified FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC");
 $result->execute();
 echo '<table class="pure-table">';
 echo '<thead>';

@@ -13,7 +13,7 @@
 
 
 // Get login status and access level
-if (getSessionStatus() == true) { $userLogged = true; $userAccess = getSessionAccess($sql); } else { $userLogged = false; $userAccess = ""; }
+if (getSessionStatus() == true) { $userLogged = true; $userAccess = getSessionAccess($yaptc_db); } else { $userLogged = false; $userAccess = ""; }
 
 // All menu options - only ones with permissions allowed are shown to logged-in users.
 // Home
@@ -54,8 +54,8 @@ if ($userLogged == false) {
 
         <div class="header">
           <h1><?php echo $yaptc_pagename; ?></h1>
-          <h2><?php if (isset($_SESSION['user_id'])) {echo "Logged as: " . $_SESSION['firstname'] . ' ' . $_SESSION['lastname'];} else {echo "Please log in to use the timecard system";}?></h2>
-          <h4><?php if (!empty($adminmessage)) {echo "<div class=\"successmessage\">" . $adminmessage . "</div>"; } ?></h4>
+          <h2><?php if (isset($_SESSION['user_id'])): echo "Logged as: " . $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; else: echo "Please log in to use the timecard system"; endif; ?></h2>
+          <h4><?php if (!empty($adminmessage)): echo "<div class=\"adminmessage\">" . $adminmessage . "</div>"; endif; ?></h4>
         </div>
 
         <div class="content">

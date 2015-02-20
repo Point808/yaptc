@@ -7,11 +7,11 @@ require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false) {
 killSession();
 } else {
-//********** BEGIN CONTENT **********//
+//********** BEGIN CONTENT **********// ?>
 
-echo "<h2 class=\"content-subhead\">Add User</h2>";
-echo "<p>Use the following form to add users to the system.  Passwords must be 8+ characters.  Email must be filled out, and username must be unique.</p>";
-
+<h2 class="content-subhead">Add User</h2>
+<p>All fields are required!  Password must be 8+ characters.  Username and email must be unique.</p>
+<?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 if (!empty($_POST['newuser']))
 {
@@ -31,18 +31,6 @@ if (!empty($_POST['newuser']))
     {
         $errors['password'] = "Password must be at least 8 charcaters.";
     }
-    // OPTIONAL
-    // Force passwords to contain at least one number and one special character.
-    /*
-    if (!preg_match('/[0-9]/', $_POST['password']))
-    {
-        $errors['password'] = "Password must contain at least one number.";
-    }
-    if (!preg_match('/[\W]/', $_POST['password']))
-    {
-        $errors['password'] = "Password must contain at least one special character.";
-    }
-    */
     if (empty($_POST['password_confirm']))
     {
         $errors['password_confirm'] = "Please confirm password.";
@@ -56,28 +44,15 @@ if (!empty($_POST['newuser']))
     {
         $errors['email'] = "Not a valid email address.";
     }
-
-    /**
-     * Check that the username and email aren't already in our database.
-     * Note the use of prepared statements. If you aren't using prepared
-     * statements, be sure to escape your data before passing it to the query.
-     *
-     * Note also the absence of SELECT *
-     * Grab the columns you need, nothing more.
-     */
     $query = "SELECT username, email
               FROM users
               WHERE username = :username OR email = :email";
-    $stmt = $sql->prepare($query);
+    $stmt = $yaptc_db->prepare($query);
     $stmt->execute(array(
         ':username' => $_POST['username'],
         ':email' => $email
     ));
 
-    /**
-     * There may well be more than one point of failure, but all we really need
-     * is the first one.
-     */
     $existing = $stmt->fetchObject();
 
     if ($existing)
@@ -93,26 +68,13 @@ if (!empty($_POST['newuser']))
     }
 }
 
-/**
- * If the form has been submitted and no errors were detected, we can proceed
- * to account creation.
- */
 if (!empty($_POST['newuser']) && empty($errors))
 {
-    /**
-     * Hash password before storing in database
-     */
     $hasher = new PasswordHash(8, FALSE);
     $password = $hasher->HashPassword($_POST['password']);
-
-    /**
-     * I'm going to mention it again because it's important; if you aren't using
-     * prepared statements, be sure to escape your data before passing it to
-     * your query.
-     */
     $query = "INSERT INTO users (firstname, lastname, username, password, email, created, usertype)
               VALUES (:firstname, :lastname, :username, :password, :email, NOW(), :usertype)";
-    $stmt = $sql->prepare($query);
+    $stmt = $yaptc_db->prepare($query);
     $success = $stmt->execute(array(
         ':firstname' => $_POST['firstname'],
         ':lastname' => $_POST['lastname'],
@@ -134,13 +96,6 @@ if (!empty($_POST['newuser']) && empty($errors))
 
 ?>
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>User Registration</title>
-    </head>
-    <body>
         <?php if (isset($message)): ?>
         <p class="success"><?php echo $message; ?></p>
         <?php endif; ?>
@@ -193,7 +148,7 @@ if (!empty($_POST['deluser']))
 {
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE' || ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['_METHOD'] == 'DELETE')) {
     $deleteid = (int) $_POST['deleteid'];
-$deletequery = $sql->prepare("DELETE FROM users WHERE users.id=$deleteid");
+$deletequery = $yaptc_db->prepare("DELETE FROM users WHERE users.id=$deleteid");
 $deletequery->execute();
 echo "user deleted!";
     if ($deletequery !== false) {
@@ -205,45 +160,42 @@ echo "user deleted!";
 }
 
 
-echo "<h2 class=\"content-subhead\">User List</h2>";
-echo "<p>Current users.  To edit, select the edit button in the right column.</p>";
-$result = $sql->prepare("SELECT users.id as userid, users.username as username, users.email as email, users.created as created, users.firstname as firstname, users.lastname as lastname, users.usertype as usertypeid, usertypes.typename as usertype
-FROM yaptc.users
-INNER JOIN usertypes ON users.usertype = usertypes.id
-ORDER BY users.lastname ASC;");
-$result->execute();
-echo '<table class="pure-table">';
-echo '<thead>';
-echo '<tr>';
-echo '<th>First Name</th>';
-echo '<th>Last Name</th>';
-echo '<th>Username</th>';
-echo '<th>Email</th>';
-echo '<th>Created</th>';
-echo '<th>User Type</th>';
-echo '<th>Actions</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
-while ($row = $result->fetch(PDO::FETCH_ASSOC))
-{
-echo "<tr>";
+?>
+
+<h2 class="content-subhead">User List</h2>
+<p>Current users.  To edit, select the edit button in the right column.</p>
+<table class="pure-table">
+<thead>
+<tr>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Username</th>
+<th>Email</th>
+<th>Created</th>
+<th>User Type</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<?php
+foreach (listUsers($yaptc_db) as $row) {
 echo "<td>" . $row['firstname'] . "</td>";
 echo "<td>" . $row['lastname'] . "</td>";
 echo "<td>" . $row['username'] . "</td>";
 echo "<td>" . $row['email'] . "</td>";
 echo "<td>" . $row['created'] . "</td>";
 echo "<td>" . $row['usertype'] . "</td>";
-?><td><form method="post" onsubmit="return confirm('Are you sure you want to delete this user?')">
+?>
+<td><form method="post" onsubmit="return confirm('WARNING! - WARNING! - WARNING! This will delete the user and ALL punches associated with them.  There is NO UNDO!  Are you sure?')">
 <input type="hidden" name="_METHOD" value="DELETE">
-<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button name="deluser" value="deluser" type="submit">Delete</button></form></td>
-<?php
-echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
+<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button button class="button-error pure-button" name="deluser" value="deluser" type="submit">Delete</button></form></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
 
 
-//********** END CONTENT **********//
+<?php //********** END CONTENT **********//
 require_once($yaptc_inc . "footer.inc.php");
 ?>
