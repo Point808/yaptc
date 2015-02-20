@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Profile";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");

@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Reports";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
-else:
-//********** BEGIN CONTENT **********// ?>
+else: ?>
+<!-- ********** BEGIN CONTENT ********** -->
 
 <h2 class="content-subhead">Punch History</h2>
 <p>Below is your company punch history.  The below drop-down can be used to select pre-configured reports.  Other reports are currently being written.</p>
@@ -51,9 +52,5 @@ else:
     <p>No query to display.  Please select from the dropdown above...</p>
 <?php endif; ?>
 
-
-
-<?php //********** END CONTENT **********//
-endif;
-require_once($yaptc_inc . "footer.inc.php");
-?>
+<!-- ********** END CONTENT ********** -->
+<?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

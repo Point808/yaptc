@@ -1,14 +1,16 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Punch Log";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-if (getSessionStatus() == false) {
+if (getSessionStatus() == false):
 killSession();
-} else {
-//********** BEGIN CONTENT **********//
+else: ?>
+<!-- ********** BEGIN CONTENT ********** -->
 
+<?php
 $userid = $_SESSION['user_id'];
 $timenow = date('Y-m-d H:i');
 
@@ -127,10 +129,8 @@ echo "</tr>";
 }
 echo '</tbody>';
 echo '</table>';
-
-
-
-//********** END CONTENT **********//
-}
-require_once($yaptc_inc . "footer.inc.php");
 ?>
+
+
+<!-- ********** END CONTENT ********** -->
+<?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

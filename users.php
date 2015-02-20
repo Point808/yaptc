@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Users";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
-if (getSessionStatus() == false) {
+if (getSessionStatus() == false):
 killSession();
-} else {
-//********** BEGIN CONTENT **********// ?>
+else: ?>
+<!-- ********** BEGIN CONTENT ********** -->
 
 <h2 class="content-subhead">Add User</h2>
 <p>All fields are required!  Password must be 8+ characters.  Username and email must be unique.</p>
@@ -140,8 +141,6 @@ if (!empty($_POST['newuser']) && empty($errors))
 <?php
 
 
-}
-
 
 // delete user only if submitted by button
 if (!empty($_POST['deluser']))
@@ -196,6 +195,5 @@ echo "<td>" . $row['usertype'] . "</td>";
 </table>
 
 
-<?php //********** END CONTENT **********//
-require_once($yaptc_inc . "footer.inc.php");
-?>
+<!-- ********** END CONTENT ********** -->
+<?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

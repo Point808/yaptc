@@ -1,24 +1,15 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Login";
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == true):
 header ("Refresh:3; url=index.php", true, 303);
 echo "<h2 class=\"content-subhead\">You are already logged in...</h2>";
-else:
-//********** BEGIN CONTENT **********// ?>
-
-
-<h2 class="content-subhead">User Login</h2>
-<form class="pure-form" action="login.php" method="post">
-    <fieldset class="pure-group" id="login">
-        <input type="text" class="pure-input-1" placeholder="Username" id="username" name="username" />
-        <input type="password" class="pure-input-1" placeholder="Password" id="password" name="password" />
-    </fieldset>
-    <button type="submit" class="pure-button button-success pure-input-1 pure-button-primary" value="Login">Sign in</button>
-</form>
+else: ?>
+<!-- ********** BEGIN CONTENT ********** -->
 
 <?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
@@ -45,9 +36,14 @@ if (!empty($_POST)):
     endif;
 endif;
 ?>
+<h2 class="content-subhead">User Login</h2>
+<form class="pure-form" action="login.php" method="post">
+    <fieldset class="pure-group" id="login">
+        <input type="text" class="pure-input-1" placeholder="Username" id="username" name="username" />
+        <input type="password" class="pure-input-1" placeholder="Password" id="password" name="password" />
+    </fieldset>
+    <button type="submit" class="pure-button button-success pure-input-1 pure-button-primary" value="Login">Sign in</button>
+</form>
 
-
-<?php //********** END CONTENT **********//
-endif;
-require_once($yaptc_inc . "footer.inc.php");
-?>
+<!-- ********** END CONTENT ********** -->
+<?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>
