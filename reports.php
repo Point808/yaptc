@@ -10,6 +10,7 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
+<?php if ($userLogged == true && $userAccess == "Administrator"): ?>
 <h2 class="content-subhead">Punch History</h2>
 <p>Below is your company punch history.  The below drop-down can be used to select pre-configured reports.  Other reports are currently being written.</p>
 <form class="pure-form pure-form-stacked" action="reports.php" method="post">
@@ -50,6 +51,9 @@ else: ?>
     <?php endif; ?>
 <?php else: ?>
     <p>No query to display.  Please select from the dropdown above...</p>
+<?php endif; ?>
+<?php else: ?>
+<h2 class="content-subhead">NOT AUTHORIZED!</h2>
 <?php endif; ?>
 
 <!-- ********** END CONTENT ********** -->

@@ -24,17 +24,15 @@ else: ?>
 <h2 class="content-subhead">Quick Punch</h2>
 <p>Clicking the button below will immediately enter a new punch for you depending on your current status.  Any notes you enter will be attached to the punch for your administrator to review.</p>
 <form class="pure-form pure-form-stacked" action="index.php" method="post">
-<fieldset>
-<input class="pure-input-1" type="text" name="notes" placeholder="Enter notes if needed" maxlength="255" value="<?php if (isset($notes)): echo $notes; endif; ?>">
-<div class="pure-controls">
+<fieldset id="punch">
+<input type="text" name="notes" placeholder="Enter notes if needed" maxlength="255" value="<?php if (isset($notes)): echo $notes; endif; ?>">
 <?php if ($status == "In"): ?>
-    <button type="submit" class="pure-button button-xlarge button-success pure-button-disabled">Punch IN</button>
-    <button type="submit" class="pure-button button-xlarge button-error">Punch OUT</button>
+    <button type="submit" class="pure-button button-success pure-button-disabled">Punch IN</button>
+    <button type="submit" class="pure-button button-error">Punch OUT</button>
 <?php elseif ($status == "Out"): ?>
-    <button type="submit" class="pure-button button-xlarge button-success">Punch IN</button>
-    <button type="submit" class="pure-button button-xlarge button-error pure-button-disabled">Punch OUT</button>
+    <button type="submit" class="pure-button button-success">Punch IN</button>
+    <button type="submit" class="pure-button button-error pure-button-disabled">Punch OUT</button>
 <?php endif; ?>
-</div>
 </fieldset>
 </form>
 

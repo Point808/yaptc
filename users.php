@@ -10,8 +10,9 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
+<?php if ($userLogged == true && $userAccess == "Administrator"): ?>
 <h2 class="content-subhead">Add User</h2>
-<p>All fields are required!  Password must be 8+ characters.  Username and email must be unique.</p>
+<p>All fields are required!  Password must be 4+ characters.  Username and email must be unique.</p>
 <?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 if (!empty($_POST['newuser']))
@@ -28,9 +29,9 @@ if (!empty($_POST['newuser']))
     {
         $errors['password'] = "Password cannot be empty.";
     }
-    if (strlen($_POST['password']) < 8)
+    if (strlen($_POST['password']) < 4)
     {
-        $errors['password'] = "Password must be at least 8 charcaters.";
+        $errors['password'] = "Password must be at least 4 charcaters.";
     }
     if (empty($_POST['password_confirm']))
     {
@@ -194,6 +195,9 @@ echo "<td>" . $row['usertype'] . "</td>";
 </tbody>
 </table>
 
+<?php else: ?>
+<h2 class="content-subhead">NOT AUTHORIZED!</h2>
+<?php endif; ?>
 
 <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

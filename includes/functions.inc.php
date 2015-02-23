@@ -17,7 +17,17 @@ $stmt->execute(array(
     ':userid' => $userid,
     ':firstname' => $firstname,
     ':lastname' => $lastname,
-    ':email' => $email
+    ':email' => $email,
+    ));
+}
+
+// Update user profile
+function updateUserPassword($yaptc_db, $userid, $password)
+{
+$stmt = $yaptc_db->prepare("UPDATE users SET password = :password WHERE id = :userid;");
+$stmt->execute(array(
+    ':userid' => $userid,
+    ':password' => $password,
     ));
 }
 
@@ -45,7 +55,7 @@ function killSession()
 function getSessionAccess($yaptc_db)
 {
     if (isset($_SESSION['user_id'])) {
-        $query3 = "SELECT users.id as userid, usertypes.typename AS usertype FROM users, usertypes WHERE users.id = :id";
+        $query3 = "SELECT users.id as userid, usertypes.typename AS usertype FROM yaptc.users INNER JOIN yaptc.usertypes ON users.usertype = usertypes.id WHERE users.id = :id";
         $stmt3  = $yaptc_db->prepare($query3);
         $stmt3->execute(array(
             ':id' => $_SESSION['user_id']
