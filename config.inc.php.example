@@ -7,7 +7,7 @@ $yaptc_appname  = 'Timecard System';              // Program name to display in 
 $yaptc_company  = 'Widgets, Inc.';                // Your company name
 $yaptc_db       = new PDO('mysql:host=localhost;dbname=YOUR_DATABASE;charset=utf8', 'YOUR_USER', 'YOUR_PASSWORD'); // Database connection string
 $yaptc_adminmsg = '';                             // Message will display on all pages!
-
+$yaptc_allowadvancedpunch = 'yes';                // Should we allow users to make manual punch entries? set to yes or no
 
 
 

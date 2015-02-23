@@ -19,7 +19,9 @@ $result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, pu
 $result->execute();
 $last = $result->fetchObject();
 
-// Let's build the page - this is the header with current status
+// Let's build the page - this is the header with current status IF allowed
+if ($yaptc_allowadvancedpunch == 'yes'):
+
 echo "<h2 class=\"content-subhead\">Advanced Punch</h2>";
 if(!isset($last->user)) {
   echo "<p>You do not appear to have any punches on record.</p>";
@@ -92,7 +94,7 @@ header('Location: '.$_SERVER['PHP_SELF']);
 // Close out the form...
 echo "</fieldset>";
 echo "</form>";
-
+endif;
 
 echo "<h2 class=\"content-subhead\">Punch History</h2>";
 echo "<p>Below is your full punch history, sorted newest to oldest.</p>";
