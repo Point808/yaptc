@@ -13,9 +13,12 @@ $yaptc_min_password = '8';                        // Minimum password length
 
 
 
+
 //********** NO NEED TO EDIT PAST HERE **********//
 $yaptc_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Advanced PDO handling
 $yaptc_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);         // Advanced PDO handling
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Advanced PDO handling
+$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);         // Advanced PDO handling
 $_SESSION['yaptc_dir'] = $yaptc_dirpath;                            // Put absolute directory path in session
 $_SESSION['yaptc_url'] = $yaptc_webpath;                            // Put absolute url path in session
 $yaptc_inc             = $yaptc_dirpath . 'includes/';              // Concatenate an includes directory path
