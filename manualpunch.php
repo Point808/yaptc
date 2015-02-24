@@ -13,7 +13,7 @@ else: ?>
 
 <?php
 $timenow = date('Y-m-d H:i');
-if (!empty($_POST)) {
+if (!empty($_POST['punchuser'])) {
 
 
 if (isset($_POST['notes'])) { if (!empty($_POST['notes'])) { $notes = $_POST['notes']; } else { $notes = NULL; } } else { $notes = NULL; }
@@ -63,7 +63,10 @@ elseif (!empty($user_punch['0']['outtime'])): $status = "Out"; $statustime = dat
 else: $status = "In"; $statustime = date('g:i a \o\n M jS, Y', strtotime($user_punch['0']['intime'])); $punchid = $user_punch['0']['punchid']; if (!empty($user_punch['0']['notes'])): $notes = $user_punch['0']['notes']; else: $notes=""; endif;
 endif;
 
-echo "<td>" . $status . " since " . $statustime . "</td>"; ?>
+echo "<td>";
+if ($statustime == "No Punches"): echo $statustime; else: echo $status . " since " . $statustime; endif;
+echo "</td>"; ?>
+
 <form method="post" onsubmit="return confirm('Are you sure you want to punch this user NOW?')">
 <td><input type="text" name="notes" placeholder="<?php echo $notes; ?>"></td>
 <td>
@@ -78,13 +81,42 @@ echo "<td>" . $status . " since " . $statustime . "</td>"; ?>
     <button type="submit" name="punchuser" value="punchuser" class="pure-button button-success">Punch IN</button>
 <?php endif; ?>
 </form>
-
-
 </td>
 </tr>
 <?php } ?>
 </tbody>
 </table>
+
+
+<?php 
+if (!empty($_POST['editpunch'])) {
+editPunch($yaptc_db, $_POST['punchid'], $_POST['intime'], $_POST['outtime'], $_POST['notes']);
+}
+if (!empty($_POST['deletepunch'])) {
+deletePunch($yaptc_db, $_POST['punchid']);
+}
+
+?>
+
+
+<h2 class="content-subhead">Edit Punches</h2>
+<p>Edit existing punches for users if needed.</p>
+<table class="pure-table">
+        <thead><tr><th>In/Out</th><th>Name</th><th>Hours</th><th>Flag</th><th>Notes</th><th>Action</th></tr></thead>
+        <tbody><?php foreach (listPunches($db, "%") as $row): ?>
+        <tr><form method="post" onsubmit="return confirm('Are you sure you want to save the edit to this user punch?')">
+<td><input type="text" name="intime" value="<?php echo $row['intime']; ?>"><input type="text" name="outtime" value="<?php echo $row['outtime']; ?>"></td>
+<td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td>
+<td><input type="text" name="notes" value="<?php echo $row['notes']; ?>"></td>
+<td><input type="hidden" name="punchid" value="<?php echo $row['punchid']; ?>"><button type="submit" name="editpunch" value="editpunch" class="pure-button button-success">Save</button><button type="submit" name="deletepunch" value="deletepunch" class="pure-button button-error">Delete</button></td></form>
+</tr><?php endforeach; ?>
+        </tbody>
+        </table>
+
+
+
+
+
 
 <?php else: ?>
 <h2 class="content-subhead">NOT AUTHORIZED!</h2>

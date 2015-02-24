@@ -33,6 +33,27 @@ function killSession()
 
 
 
+// Edit Punch
+function editPunch($yaptc_db, $punchid, $intime, $outtime, $notes)
+{
+$stmt = $yaptc_db->prepare("UPDATE punches SET punches.intime = :intime, punches.outtime = :outtime, punches.notes = :notes WHERE punches.id = :punchid;");
+$stmt->execute(array(
+    ':punchid' => $punchid,
+    ':intime' => $intime,
+    ':outtime' => $outtime,
+    ':notes' => $notes
+    ));
+}
+// Delete Punch
+function deletePunch($yaptc_db, $punchid)
+{
+$stmt = $yaptc_db->prepare("DELETE FROM punches WHERE punches.id = :punchid;");
+$stmt->execute(array(
+    ':punchid' => $punchid
+    ));
+}
+
+
 // Punch Out
 function punchOut($yaptc_db, $punchid, $notes, $outtime, $modified=NULL)
 {
