@@ -10,9 +10,9 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
-<?php if ($userLogged == true && $userAccess == "Administrator"): ?>
+<?php if ($session_user["0"]["usertype"] == "Administrator"): ?>
 <h2 class="content-subhead">Add User</h2>
-<p>All fields are required!  Password must be 4+ characters.  Username and email must be unique.</p>
+<p>All fields are required!  Password must be at least <?php echo $yaptc_min_password; ?> characters.  Username and email must be unique.</p>
 <?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 if (!empty($_POST['newuser']))
@@ -29,9 +29,9 @@ if (!empty($_POST['newuser']))
     {
         $errors['password'] = "Password cannot be empty.";
     }
-    if (strlen($_POST['password']) < 4)
+    if (strlen($_POST['password']) < $yaptc_min_password)
     {
-        $errors['password'] = "Password must be at least 4 charcaters.";
+        $errors['password'] = "Password must be at least $yaptc_min_password charcaters.";
     }
     if (empty($_POST['password_confirm']))
     {
@@ -111,17 +111,20 @@ if (!empty($_POST['newuser']) && empty($errors))
         <form class="pure-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <fieldset id="registration" class="pure-group">
         <div class="pure-g">
-            <div class="pure-u-1 pure-u-md-1-2">
+            <div class="pure-u-1 pure-u-md-1-3">
                 <input type="text" class="pure-input" id="firstname" name="firstname" placeholder="First Name" required />
                     <?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
                 <input type="text" class="pure-input" id="lastname" name="lastname" placeholder="Last Name" required />
                     <?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
+</div>
+            <div class="pure-u-1 pure-u-md-1-3">
                 <input type="text" class="pure-input" id="username" name="username" placeholder="Username" required />
                     <?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
-</div>
-            <div class="pure-u-1 pure-u-md-1-2">
+
                 <input type="text" class="pure-input" id="email" name="email" placeholder="Email" />
                     <?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
+</div>
+            <div class="pure-u-1 pure-u-md-1-3">
                 <input type="password" class="pure-input" id="password" name="password" placeholder="Password" required />
                     <?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
                 <input type="password" class="pure-input" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
@@ -179,7 +182,7 @@ echo "user deleted!";
 <tbody>
 <tr>
 <?php
-foreach (listUsers($yaptc_db) as $row) {
+foreach (getUserInfo($db, "%") as $row) {
 echo "<td>" . $row['firstname'] . "</td>";
 echo "<td>" . $row['lastname'] . "</td>";
 echo "<td>" . $row['username'] . "</td>";

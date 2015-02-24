@@ -10,13 +10,15 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
-<?php $punchStatus = getPunchStatus($yaptc_db, $_SESSION['user_id']); ?>
 <h2 class="content-subhead">Current Status</h2>
-<?php if (!isset($punchStatus['0'])): $status = "Out"; ?>
+<?php
+$timenow = date('Y-m-d H:i');
+$session_punch = listPunches($db, $session_user["0"]["userid"], 1);
+if (!isset($session_punch['0']['intime'])): $status = "Out"; ?>
     <p>You do not appear to have any punches on record.</p>
 <?php else:
-    if (!empty($punchStatus['3'])): $status = "Out"; $statustime = $punchStatus['3'];
-        else: $status = "In"; $statustime = $punchStatus['2']; $punchid = $punchStatus['0']; $notes = $punchStatus['4'];
+    if (!empty($session_punch['0']['outtime'])): $status = "Out"; $statustime = $session_punch['0']['outtime'];
+        else: $status = "In"; $statustime = $session_punch['0']['intime']; $punchid = $session_punch['0']['punchid']; $notes = $session_punch['0']['notes'];
     endif; ?>
 <p>You have been Punched <?php echo $status; ?> since <?php echo date('g:i a \o\n M jS, Y', strtotime($statustime)); ?>.</p>
 <?php endif; ?>
@@ -37,6 +39,7 @@ else: ?>
 </form>
 
 <?php
+$punchtime = $timenow . ':00';
 if (!empty($_POST)):
     if (isset($_POST['notes'])):
         if (!empty($_POST['notes'])): $notes = $_POST['notes'];
@@ -44,11 +47,13 @@ if (!empty($_POST)):
             endif;
         else: $notes = NULL;
         endif;
-    if ($status == "In"): punchOut($yaptc_db, $punchid, $notes);
-        elseif ($status == "Out"): punchIn($yaptc_db, $_SESSION['user_id'], $notes);
+    if ($status == "In"): punchOut($yaptc_db, $punchid, $notes, $punchtime, 0);
+        elseif ($status == "Out"): punchIn($yaptc_db, $_SESSION['user_id'], $notes, $punchtime, 0);
         endif;
     header('Location: ' . $_SERVER['PHP_SELF']);
     endif; ?>
+
+
 
 <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

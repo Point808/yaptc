@@ -12,38 +12,39 @@
             <?php
 
 
-// Get login status and access level
-if (getSessionStatus() == true) { $userLogged = true; $userAccess = getSessionAccess($yaptc_db); } else { $userLogged = false; $userAccess = ""; }
+// Get logged-in user's profile information
+$session_user = getUserInfo($db, $_SESSION['user_id']);
+$session_status = getSessionStatus();
 
-// All menu options - only ones with permissions allowed are shown to logged-in users.
-// Home
-if ($userLogged == true) {
-  echo '<li'; if ($yaptc_pagename=='Home') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="index.php">Home</a></li>';
-  }
-// Profile
-if ($userLogged == true) {
-  echo '<li'; if ($yaptc_pagename=='Profile') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="profile.php">Profile</a></li>';
-  }
-// Punch Log
-if ($userLogged == true) {
-  echo '<li'; if ($yaptc_pagename=='Punch Log') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="punchlog.php">Punch Log</a></li>';
-  }
-// Users
-if ($userLogged == true && $userAccess == "Administrator") {
-  echo '<li'; if ($yaptc_pagename=='Users') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="users.php">Users</a></li>';
-  }
-// Reports
-if ($userLogged == true && $userAccess == "Administrator") {
-  echo '<li'; if ($yaptc_pagename=='Reports') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="reports.php">Reports</a></li>';
-  }       
-// Logout
-if ($userLogged == true) {
-  echo '<li'; if ($yaptc_pagename=='Logout') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="logout.php">Logout</a></li>';
-  }
-// Login
-if ($userLogged == false) {
+// Menu Setup
+
+// For logged-out users
+if ($session_status == false):
   echo '<li'; if ($yaptc_pagename=='Login') {echo ' class="pure-menu-selected">';} else {echo '>';} echo '<a href="login.php">Login</a></li>';
-  }
+// For logged-in users, depending on access
+elseif ($session_status == true):
+// Home
+echo '<li'; if ($yaptc_pagename=='Home'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="index.php">Home</a></li>';
+// Profile Menu
+echo '<li'; if ($yaptc_pagename=='Profile'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="profile.php">Profile</a></li>';
+// Punch Log Menu
+echo '<li'; if ($yaptc_pagename=='Punch Log'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="punchlog.php">Punch Log</a></li>';
+// Users Menu
+if ($session_user["0"]["usertype"] == "Administrator"):
+  echo '<li'; if ($yaptc_pagename=='Users'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="users.php">Users</a></li>';
+endif;
+// Manual Punch
+if ($session_user["0"]["usertype"] == "Administrator"):
+  echo '<li'; if ($yaptc_pagename=='Manual Punch'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="manualpunch.php">Manual Punch</a></li>';
+endif;
+// Reports Menu
+if ($session_user["0"]["usertype"] == "Administrator"):
+  echo '<li'; if ($yaptc_pagename=='Reports'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="reports.php">Reports</a></li>';
+endif;
+// Logout Menu
+echo '<li'; if ($yaptc_pagename=='Logout'): echo ' class="pure-menu-selected">'; else: echo '>'; endif; echo '<a href="logout.php">Logout</a></li>';
+
+endif;
 
 ?>
           </ul>
@@ -54,7 +55,7 @@ if ($userLogged == false) {
 
         <div class="header">
           <h1><?php echo $yaptc_pagename; ?></h1>
-          <h2><?php if (isset($_SESSION['user_id'])): echo "Logged as: " . $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; else: echo "Please log in to use the timecard system"; endif; ?></h2>
+          <h2><?php if (isset($_SESSION['user_id'])): echo "User: " . $session_user["0"]["firstname"] . ' ' . $session_user["0"]["lastname"]; else: echo "Please log in to use the timecard system"; endif; ?></h2>
           <h4><?php if (!empty($adminmessage)): echo "<div class=\"adminmessage\">" . $adminmessage . "</div>"; endif; ?></h4>
         </div>
 

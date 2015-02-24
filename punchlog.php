@@ -10,6 +10,7 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
+
 <?php
 $userid = $_SESSION['user_id'];
 $timenow = date('Y-m-d H:i');
@@ -96,42 +97,21 @@ echo "</fieldset>";
 echo "</form>";
 endif;
 
+
+
+
 echo "<h2 class=\"content-subhead\">Punch History</h2>";
 echo "<p>Below is your full punch history, sorted newest to oldest.</p>";
-$result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes, punches.modified as modified FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC");
-$result->execute();
-echo '<table class="pure-table">';
-echo '<thead>';
-echo '<tr>';
-echo '<th>Time In</th>';
-echo '<th>Time Out</th>';
-echo '<th>Hours</th>';
-echo '<th>Flag</th>';
-echo '<th>Notes</th>';
-echo '</tr>';
-echo '</thead>';
-echo '<tbody>';
-while ($row = $result->fetch(PDO::FETCH_ASSOC))
-{
-$intime = $row['intime'];
-$outtime = $row['outtime'];
-$date1 = new DateTime($intime);
-$date2 = new DateTime($outtime);
-$seconds = abs($date1->getTimestamp()-$date2->getTimestamp());
-$flag = $row['modified'];
-if ($flag == "1") {$flg="YES";} else {$flg="";}
-$notes = $row['notes'];
-echo "<tr>";
-echo "<td>$intime</td>";
-echo "<td>$outtime</td>";
-echo "<td>" . number_format((float)(($seconds/60)/60), 2, '.', '') . "</td>";
-echo "<td>$flg</td>";
-echo "<td>$notes</td>";
-echo "</tr>";
-}
-echo '</tbody>';
-echo '</table>';
 ?>
+
+<table class="pure-table">
+<thead><tr><th>In</th><th>Out</th><th>Name</th><th>Hours</th><th>Flagged</th><th>Notes</th></tr></thead>
+        <tbody><?php foreach (listPunches($db, $session_user["0"]["userid"]) as $row): ?>
+        <tr><td><?php echo $row['intime']; ?></td><td><?php echo $row['outtime']; ?></td><td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><?php echo $row['notes']; ?></td></tr><?php endforeach; ?>
+        </tbody>
+        </table>
+
+
 
 
 <!-- ********** END CONTENT ********** -->
