@@ -9,7 +9,6 @@
 
 
 
-<script type="text/javascript" src="<?php echo $yaptc_libweb; ?>date_time.js"></script>
 <!--[if lte IE 8]>
 <link rel="stylesheet" href="<?php echo $yaptc_incweb; ?>side-menu-old-ie.css">
 <![endif]-->
@@ -25,4 +24,5 @@
 <!--<![endif]-->
 
 </head>
-<body onLoad="startclock();">
+<body>
+

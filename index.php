@@ -10,30 +10,43 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
-
-
-<h2 class="content-subhead">Current Status</h2>
 <?php
-$timenow = date('Y-m-d H:i');
 $session_punch = listPunches($db, $session_user["0"]["userid"], 1);
-if (!isset($session_punch['0']['intime'])): $status = "Out"; ?>
-    <p>You do not appear to have any punches on record.</p>
-<?php else:
-    if (!empty($session_punch['0']['outtime'])): $status = "Out"; $statustime = $session_punch['0']['outtime'];
-        else: $status = "In"; $statustime = $session_punch['0']['intime']; $punchid = $session_punch['0']['punchid']; $notes = $session_punch['0']['notes'];
-    endif; ?>
-<p>You have been Punched <?php echo $status; ?> since <?php echo date('g:i a \o\n M jS, Y', strtotime($statustime)); ?>.</p>
-<?php endif; ?>
+if (!isset($session_punch['0']['intime'])):
+    $session_status = lang('OUT');
+    $session_message = lang('PUNCH_STATUS') . ": " . lang('NO_PUNCHES');
+else:
+    if (!empty($session_punch['0']['outtime'])):
+        $session_status = lang('OUT');
+        $statustime = $session_punch['0']['outtime'];
+        $session_message = lang('PUNCH_STATUS') . ": " . $session_status . " " . lang('SINCE') . " " . date('g:i a \o\n M jS, Y', strtotime($statustime));
+    else:
+        $session_status = lang('IN');
+        $statustime = $session_punch['0']['intime'];
+        $punchid = $session_punch['0']['punchid'];
+        $notes = $session_punch['0']['notes'];
+        $session_message = lang('PUNCH_STATUS') . ": " . $session_status . " " . lang('SINCE') . " " . date('g:i a \o\n M jS, Y', strtotime($statustime));
+    endif;
+endif;
+?>
 
-<h2 class="content-subhead">Quick Punch</h2>
-<p>Clicking the button below will immediately enter a new punch for you depending on your current status.  Any notes you enter will be attached to the punch for your administrator to review.</p>
+
+
+
+
+
+
+
+<h2 class="content-subhead"><?php echo lang('QUICK_PUNCH'); ?></h2>
+<p><?php echo $session_message; ?></p>
+<p><?php echo lang('QUICK_PUNCH_PARAGRAPH'); ?></p>
 <form class="pure-form pure-form-stacked" action="index.php" method="post">
 <fieldset id="punch">
 <input type="text" name="notes" placeholder="Enter notes if needed" maxlength="255" value="<?php if (isset($notes)): echo $notes; endif; ?>">
-<?php if ($status == "In"): ?>
+<?php if ($session_status == lang('IN')): ?>
     <button type="submit" class="pure-button button-success pure-button-disabled">Punch IN</button>
     <button type="submit" class="pure-button button-error">Punch OUT</button>
-<?php elseif ($status == "Out"): ?>
+<?php elseif ($session_status == lang('OUT')): ?>
     <button type="submit" class="pure-button button-success">Punch IN</button>
     <button type="submit" class="pure-button button-error pure-button-disabled">Punch OUT</button>
 <?php endif; ?>
@@ -48,8 +61,8 @@ if (!isset($session_punch['0']['intime'])): $status = "Out"; ?>
 $punchtime = date('Y-m-d H:i:s');
 if (!empty($_POST)):
     if (!empty($_POST['notes'])): $notes = $_POST['notes']; else: $notes = NULL; endif;
-    if ($status == "In"): punchOut($yaptc_db, $punchid, $notes, $punchtime, NULL);
-        elseif ($status == "Out"): punchIn($yaptc_db, $_SESSION['user_id'], $notes, $punchtime, NULL);
+    if ($session_status == lang('IN')): punchOut($yaptc_db, $punchid, $notes, $punchtime, NULL);
+        elseif ($session_status == lang('OUT')): punchIn($yaptc_db, $_SESSION['user_id'], $notes, $punchtime, NULL);
         endif;
     header('Location: ' . $_SERVER['PHP_SELF']);
     endif;

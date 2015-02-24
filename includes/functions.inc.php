@@ -1,8 +1,24 @@
 <?php
 
+// Languages
+function lang($phrase){
+    static $lang = array(
+  'NO_PUNCHES' => 'You have no recorded punches',
+  'OUT' => 'Out',
+  'IN' => 'In',
+  'SINCE' => 'since',
+  'PUNCH_STATUS' => 'Punch Status',
+  'SERVER_TIME' => 'Server Time',
+  'QUICK_PUNCH_PARAGRAPH' => 'Click below to immediately punch your time.  You may enter notes for your administrator to review.',
+  'YOU_HAVE_BEEN_PUNCHED' => 'You have been punched',
+  'QUICK_PUNCH' => 'Quick Punch'
+    );
+    return $lang[$phrase];
+}
+
+
 // Current Time
 $timenow = date('Y-m-d H:i:s');
-
 
 // Get user list for users management page
 function listUsers($yaptc_db) {
