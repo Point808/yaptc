@@ -39,19 +39,22 @@ if (!isset($session_punch['0']['intime'])): $status = "Out"; ?>
 </form>
 
 <?php
-$punchtime = $timenow . ':00';
+
+
+
+
+$punchtime = date('Y-m-d H:i:s');
 if (!empty($_POST)):
-    if (isset($_POST['notes'])):
-        if (!empty($_POST['notes'])): $notes = $_POST['notes'];
-            else: $notes = NULL;
-            endif;
-        else: $notes = NULL;
-        endif;
-    if ($status == "In"): punchOut($yaptc_db, $punchid, $notes, $punchtime, 0);
-        elseif ($status == "Out"): punchIn($yaptc_db, $_SESSION['user_id'], $notes, $punchtime, 0);
+    if (!empty($_POST['notes'])): $notes = $_POST['notes']; else: $notes = NULL; endif;
+    if ($status == "In"): punchOut($yaptc_db, $punchid, $notes, $punchtime, NULL);
+        elseif ($status == "Out"): punchIn($yaptc_db, $_SESSION['user_id'], $notes, $punchtime, NULL);
         endif;
     header('Location: ' . $_SERVER['PHP_SELF']);
-    endif; ?>
+    endif;
+
+
+
+?>
 
 
 
