@@ -1,5 +1,9 @@
 <?php
 
+// Current Time
+$timenow = date('Y-m-d H:i:s');
+
+
 // Get user list for users management page
 function listUsers($yaptc_db) {
    $stmt = $yaptc_db->query("SELECT users.id as userid, users.username as username, users.email as email, users.created as created, users.firstname as firstname, users.lastname as lastname, users.usertype as usertypeid, usertypes.typename as usertype

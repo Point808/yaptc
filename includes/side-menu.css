@@ -34,32 +34,39 @@ body {
 	margin:0;
 	padding:0;
 	max-width:800px;
-	margin-bottom:50px;
+	margin-bottom:1em;
 	line-height:1em;
 }
 .header {
-	margin:0;
+	margin:.25em 0 0 0;	
 	color:#333;
 	padding:.0;
 	border-bottom:2px solid #eee;
 }
 .header h1 {
-	margin:0;
-	font-size:3em;
+	margin:0;	
+	font-size:2em;
 	font-weight:300;
 	padding:0;	
 }
 .header h2 {
-	margin:0;
+	margin:0;	
 	font-size:1em;
 	font-weight:300;
 	padding:0;
 	color:#888;
 }
 .content-subhead {		
-	margin:1em 0 0 0;	
+	margin:.25em 0 0 0;	
 	font-weight:300;
 	color: #888;
+	font-size:1.5em;
+}
+.content p {
+	margin:.25em 0 1em 0;	
+	font-weight:300;
+	color: #888;
+	font-size:1em;
 }
 /*The `#menu` `<div>` is the parent `<div>` that contains the `.pure-menu` thatappears on the left side of the page.*/
 #menu {

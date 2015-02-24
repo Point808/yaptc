@@ -13,7 +13,6 @@ else: ?>
 
 <?php
 $userid = $_SESSION['user_id'];
-$timenow = date('Y-m-d H:i');
 
 // This is to get the current user status - in or out - and the notes and times associated for use in the form
 $result = $yaptc_db->prepare("SELECT punches.id as punchid, users.id as user, punches.intime as intime, punches.outtime as outtime, punches.notes as notes FROM punches INNER JOIN users ON punches.userid = users.id WHERE users.id = $userid ORDER BY punches.id DESC LIMIT 1");
@@ -64,8 +63,8 @@ if (isset($_POST['notes'])) { if (!empty($_POST['notes'])) { $p_notes = $_POST['
 
 // Is the punch time field set? If so, use, otherwise set to now
 if (isset($_POST['punchtime'])) {
-  if (!empty($_POST['punchtime'])) { $p_punchtime = $_POST['punchtime'] . ':00'; $p_modified = "1"; } else { $p_punchtime = $timenow . ':00'; $p_modified = "0"; }
-} else { $p_punchtime = $timenow . ':00'; $p_modified = "0"; }
+  if (!empty($_POST['punchtime'])) { $p_punchtime = $_POST['punchtime'] . ':00'; $p_modified = "1"; } else { $p_punchtime = $timenow; $p_modified = "0"; }
+} else { $p_punchtime = $timenow; $p_modified = "0"; }
 
 // Is the user currently punched in?  If so, insert the punch out record, otherwise, insert a new punch in
 if ($status=="In") {

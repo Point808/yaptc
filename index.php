@@ -10,6 +10,8 @@ killSession();
 else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
+
+
 <h2 class="content-subhead">Current Status</h2>
 <?php
 $timenow = date('Y-m-d H:i');
