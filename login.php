@@ -2,18 +2,18 @@
 session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
-$yaptc_pagename = "Login";
+$yaptc_pagename = lang('LOGIN');
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == true):
-header ("Refresh:3; url=index.php", true, 303);
-echo "<h2 class=\"content-subhead\">You are already logged in...</h2>";
+header('Location: index.php');
 else: ?>
-<!-- ********** BEGIN CONTENT ********** -->
-
+                    <!-- ********** BEGIN CONTENT ********** -->
 <?php
+// hash password for comparison
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
 $hasher = new PasswordHash(8, FALSE);
+// compare if posted
 if (!empty($_POST)):
     $query = "SELECT id, password, UNIX_TIMESTAMP(created) AS salt, firstname, lastname FROM users WHERE username = :username";
     $stmt  = $yaptc_db->prepare($query);
@@ -30,20 +30,18 @@ if (!empty($_POST)):
         $_SESSION['lastname']  = $user->lastname;
         session_write_close();
         header("Location: index.php");
-    else:
-        header("Refresh:3; url=login.php", true, 303);
-        echo "<h2 class=\"content-subhead\">Login failed, please try again...</h2>";
     endif;
 endif;
 ?>
-<h2 class="content-subhead">User Login</h2>
-<form class="pure-form" action="login.php" method="post">
-    <fieldset class="pure-group" id="login">
-        <input type="text" class="pure-input-1" placeholder="Username" id="username" name="username" />
-        <input type="password" class="pure-input-1" placeholder="Password" id="password" name="password" />
-    </fieldset>
-    <button type="submit" class="pure-button button-success pure-input-1 pure-button-primary" value="Login">Sign in</button>
-</form>
 
-<!-- ********** END CONTENT ********** -->
+                    <h2 class="content-subhead"><?php echo lang('USER_INFORMATION'); ?></h2>
+                    <form class="pure-form" action="login.php" method="post">
+                        <fieldset class="pure-group" id="login">
+                            <input type="text" class="pure-input-1" placeholder="<?php echo lang('USERNAME'); ?>" id="username" name="username" />
+                            <input type="password" class="pure-input-1" placeholder="<?php echo lang('PASSWORD'); ?>" id="password" name="password" />
+                        </fieldset>
+                        <button type="submit" class="pure-button button-success pure-input-1 pure-button-primary" name="login"><?php echo lang('LOGIN'); ?></button>
+                    </form>
+
+                    <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

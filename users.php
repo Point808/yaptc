@@ -2,50 +2,32 @@
 session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
-$yaptc_pagename = "Users";
+$yaptc_pagename = lang('USERS');
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>
-<!-- ********** BEGIN CONTENT ********** -->
+                    <!-- ********** BEGIN CONTENT ********** -->
 
-<?php if ($session_user["0"]["usertype"] == "Administrator"): ?>
-<h2 class="content-subhead">Add User</h2>
-<p>All fields are required!  Password must be at least <?php echo $yaptc_min_password; ?> characters.  Username and email must be unique.</p>
+<?php if($session_user["0"]["usertype"] !== "Administrator"): header("Location: index.php"); ?>
+                    <h2 class="content-subhead"><?php echo lang('NOT_AUTHORIZED'); ?></h2>
+<?php endif; ?>
+
+                    <h2 class="content-subhead"><?php echo lang('ADD_USER'); ?></h2>
+                    <p><?php echo lang('ADD_USER_DESC') . $yaptc_min_password; ?></p>
+
 <?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
-if (!empty($_POST['newuser']))
-{
-    if (empty($_POST['username']))
-    {
-        $errors['username'] = "Username cannot be empty.";
-    }
-    if (preg_match('/[^a-zA-Z0-9 .-_]/', $_POST['username']))
-    {
-        $errors['username'] = "Username contains illegal characters.";
-    }
-    if (empty($_POST['password']))
-    {
-        $errors['password'] = "Password cannot be empty.";
-    }
-    if (strlen($_POST['password']) < $yaptc_min_password)
-    {
-        $errors['password'] = "Password must be at least $yaptc_min_password charcaters.";
-    }
-    if (empty($_POST['password_confirm']))
-    {
-        $errors['password_confirm'] = "Please confirm password.";
-    }
-    if ($_POST['password'] != $_POST['password_confirm'])
-    {
-        $errors['password_confirm'] = "Passwords do not match.";
-    }
+if (!empty($_POST['newuser'])):
+    if (empty($_POST['username'])): $errors['username'] = lang('USERNAME_NOTEMPTY'); endif;
+    if (preg_match('/[^a-zA-Z0-9 .-_]/', $_POST['username'])): $errors['username'] = lang('ILLEGAL_CHARACTERS'); endif;
+    if (empty($_POST['password'])): $errors['password'] = lang('PASSWORD_NOTEMPTY'); endif;
+    if (strlen($_POST['password']) < $yaptc_min_password): $errors['password'] = lang('MIN_PASSWORD_LENGTH') . $yaptc_min_password; endif;
+    if (empty($_POST['password_confirm'])): $errors['password_confirm'] = lang('PASSWORD_NOTCONFIRMED'); endif;
+    if ($_POST['password'] != $_POST['password_confirm']): $errors['password_confirm'] = lang('PASSWORD_NOTMATCH'); endif;
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-    if (!$email)
-    {
-        $errors['email'] = "Not a valid email address.";
-    }
+    if (!$email): $errors['email'] = lang('EMAIL_NOTVALID'); endif;
     $query = "SELECT username, email
               FROM users
               WHERE username = :username OR email = :email";
@@ -54,26 +36,19 @@ if (!empty($_POST['newuser']))
         ':username' => $_POST['username'],
         ':email' => $email
     ));
-
     $existing = $stmt->fetchObject();
+    if ($existing):
+        if ($existing->username == $_POST['username']): $errors['username'] = lang('USERNAME_USED'); endif;
+        if ($existing->email == $email): $errors['email'] = lang('PASSWORD_USED'); endif;
+    endif;
+endif;
 
-    if ($existing)
-    {
-        if ($existing->username == $_POST['username'])
-        {
-        $errors['username'] = "That username is already in use.";
-        }
-        if ($existing->email == $email)
-        {
-        $errors['email'] = "That email address is already in use.";
-        }
-    }
-}
-
-if (!empty($_POST['newuser']) && empty($errors))
-{
+if (!empty($_POST['newuser']) && empty($errors)):
     $hasher = new PasswordHash(8, FALSE);
     $password = $hasher->HashPassword($_POST['password']);
+
+
+
     $query = "INSERT INTO users (firstname, lastname, username, password, email, created, usertype)
               VALUES (:firstname, :lastname, :username, :password, :email, NOW(), :usertype)";
     $stmt = $yaptc_db->prepare($query);
@@ -85,17 +60,8 @@ if (!empty($_POST['newuser']) && empty($errors))
         ':email'    => $_POST['email'],
         ':usertype'    => $_POST['usertype'],
     ));
-
-    if ($success)
-    {
-        $message = "Account created.";
-    }
-    else
-    {
-        echo "Account could not be created. Please try again later.";
-    }
-}
-
+    if ($success): $message = "Account created."; else: echo "Account could not be created. Please try again later."; endif;
+ endif;
 ?>
 
         <?php if (isset($message)): ?>
@@ -132,8 +98,8 @@ if (!empty($_POST['newuser']) && empty($errors))
 </div>
             <div class="pure-u-1 pure-u-md-1">
                 <label for="usertype">Access Level</label>
-                <select id="usertype" name="usertype" required />
-<option value="00000000002">User</option>
+                <select id="usertype" name="usertype" required>
+<option value="00000000002" selected>User</option>
 <option value="00000000001">Administrator</option>
 </select>
                     <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
@@ -165,42 +131,20 @@ echo "user deleted!";
 
 ?>
 
-<h2 class="content-subhead">User List</h2>
-<p>Current users.  To edit, select the edit button in the right column.</p>
-<table class="pure-table">
-<thead>
-<tr>
-<th>First Name</th>
-<th>Last Name</th>
-<th>Username</th>
-<th>Email</th>
-<th>Created</th>
-<th>User Type</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<?php
-foreach (getUserInfo($db, "%") as $row) {
-echo "<td>" . $row['firstname'] . "</td>";
-echo "<td>" . $row['lastname'] . "</td>";
-echo "<td>" . $row['username'] . "</td>";
-echo "<td>" . $row['email'] . "</td>";
-echo "<td>" . $row['created'] . "</td>";
-echo "<td>" . $row['usertype'] . "</td>";
-?>
-<td><form method="post" onsubmit="return confirm('WARNING! - WARNING! - WARNING! This will delete the user and ALL punches associated with them.  There is NO UNDO!  Are you sure?')">
-<input type="hidden" name="_METHOD" value="DELETE">
-<input type="hidden" name="deleteid" value="<?php echo $row['userid']; ?>"><button button class="button-error pure-button" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>>Delete</button></form></td>
-</tr>
-<?php } ?>
-</tbody>
-</table>
+                    <h2 class="content-subhead"><?php echo lang('USER_LIST_HEADER'); ?></h2>
+                    <p><?php echo lang('USER_LIST_DESC'); ?></p>
+                    <table class="pure-table">
+                        <thead>
+                            <tr><th><?php echo lang('NAME'); ?></th><th><?php echo lang('USERNAME'); ?></th><th><?php echo lang('EMAIL'); ?></th><th><?php echo lang('CREATED'); ?></th><th><?php echo lang('USERTYPE'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
+                        </thead>
+                        <tbody>
+<?php foreach (getUserInfo($db, "%") as $row): ?>
+                            <tr>
+                                <td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['email']; ?></td><td><?php echo $row['created']; ?></td><td><?php echo $row['usertype']; ?></td><td><form method="post" onsubmit="return confirm('<?php echo lang('DELETE_WARNING'); ?>')"><input type="hidden" id="_METHOD" name="_METHOD" value="DELETE" /><input type="hidden" id="deleteid" name="deleteid" value="<?php echo $row['userid']; ?>" /><button class="button-error pure-button" id="deluser" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>>Delete</button></form></td>
+                            </tr>
+<?php endforeach; ?>
+                        </tbody>
+                    </table>
 
-<?php else: ?>
-<h2 class="content-subhead">NOT AUTHORIZED!</h2>
-<?php endif; ?>
-
-<!-- ********** END CONTENT ********** -->
+                    <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

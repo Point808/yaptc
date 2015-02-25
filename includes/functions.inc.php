@@ -3,15 +3,65 @@
 // Languages
 function lang($phrase){
     static $lang = array(
+  'ACCOUNT_INFO_HEADER' => 'Account Information',
+  'ACCOUNT_INFO_DESC' => 'You may make changes to your user profile below.  To change your password, enter a new password twice below and press save.  Minimum password length is ',
+  'USER_LIST_HEADER' => 'User List',
+  'USER_LIST_DESC' => 'Delete or Punch users from the actions column.  Eventually, password resets will also be enabled.',
+  'PUNCH_HISTORY_HEADER' => 'Punch History',
+  'PUNCH_HISTORY_DESC' => 'The following is your entire punch history, most recent first.',
   'NO_PUNCHES' => 'You have no recorded punches',
+  'NOT_AUTHORIZED' => 'Not Authorized!',
   'OUT' => 'Out',
   'IN' => 'In',
+  'ADD_USER' => 'Add User',
+  'ADD_USER_DESC' => 'All fields are required!  Username and email must be unique.  Minimum password length is ',
+  'HOURS' => 'Hours',
+  'FLAG' => 'Flag',
+  'NOTES' => 'Notes',
+  'HOME' => 'Home',
+  'LOGIN' => 'Login',
+  'LOGOUT' => 'Logout',
+  'ACCOUNT' => 'Account',
+  'META_DESC' => 'YAPTC Timecard system is a time recording application for small businesses.',
+  'USERS' => 'Manage Users',
+  'SAVE' => 'Save',
+  'NEW' => 'New',
+  'NAME' => 'Name',
+  'CONFIRM' => 'Confirm',
+  'PUNCH' => 'Punch',
+  'NOTES_PLACEHOLDER' => 'Enter notes if needed',
+  'USERNAME' => 'Username',
+  'DELETE_WARNING' => '********* WARNING! ********** Are you SURE you want to DELETE this user AND ALL ASSOCIATED PUNCHES!?!?  There is NO UNDO!',
+  'ACTIONS' => 'Actions',
+  'CREATED' => 'Created',
+  'MIN_PASSWORD_LENGTH' => 'Minimum password length is ',
+  'USERTYPE' => 'User Type',
+  'ILLEGAL_CHARACTERS' => 'Username contains illegal characters',
+  'PASSWORD_NOTMATCH' => 'Passwords do not match',
+  'EMAIL_NOTVALID' => 'Email address not valid',
+  'USERNAME_NOTEMPTY' => 'Username cannot be empty',
+  'PASSWORD_NOTEMPTY' => 'Password cannot be empty',
+  'USERNAME_USED' => 'Username already in use',
+  'EMAIL_USED' => 'Email already in use',
+  'PASSWORD_NOTCONFIRMED' => 'Password must be confirmed',
+  'PASSWORD' => 'Password',
+  'USER' => 'User',
+  'FIRSTNAME' => 'First Name',
+  'LASTNAME' => 'Last Name',
+  'EMAIL' => 'E-Mail',
+  'USER_INFORMATION' => 'User Information',
+  'PUNCH_EDITOR' => 'Punch Edit',
+  'PLEASE_LOG_IN' => 'Please log in to use the timecard system',
+  'REPORTS' => 'Reports',
   'SINCE' => 'since',
   'PUNCH_STATUS' => 'Punch Status',
   'SERVER_TIME' => 'Server Time',
   'QUICK_PUNCH_PARAGRAPH' => 'Click below to immediately punch your time.  You may enter notes for your administrator to review.',
+  'ADVANCED_PUNCH_PARAGRAPH' => 'Click the punch button to immediately punch your time.  You may also make changes to the defaults.  Note that changing the punch time will result in a flag on the punch for your administrator to review.',
   'YOU_HAVE_BEEN_PUNCHED' => 'You have been punched',
-  'QUICK_PUNCH' => 'Quick Punch'
+  'QUICK_PUNCH' => 'Quick Punch',
+  'SOFTWARE_VERSION' => 'Software Version',
+  'ADVANCED_PUNCH' => 'Advanced Punch'
     );
     return $lang[$phrase];
 }
@@ -19,6 +69,9 @@ function lang($phrase){
 
 // Current Time
 $timenow = date('Y-m-d H:i:s');
+
+// This Version
+$yaptc_version = 'yaptc 0.8-beta';
 
 // Get user list for users management page
 function listUsers($yaptc_db) {

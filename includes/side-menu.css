@@ -38,19 +38,19 @@ body {
 	line-height:1em;
 }
 .header {
-	margin:.25em 0 0 0;	
+	margin:.25em 0 1em 0;	
 	color:#333;
-	padding:.0;
+	padding:0;
 	border-bottom:2px solid #eee;
 }
 .header h1 {
-	margin:0;	
+	margin:.25em 0 0 0;	
 	font-size:2em;
 	font-weight:300;
 	padding:0;	
 }
 .header h2 {
-	margin:0;	
+	margin:.25em 0 0 0;	
 	font-size:1em;
 	font-weight:300;
 	padding:0;
@@ -63,7 +63,7 @@ body {
 	font-size:1.5em;
 }
 .content p {
-	margin:.25em 0 1em 0;	
+	margin:.25em 0 0 0;	
 	font-weight:300;
 	color: #888;
 	font-size:1em;
