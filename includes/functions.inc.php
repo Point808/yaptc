@@ -12,6 +12,7 @@ function lang($phrase){
   'NO_PUNCHES' => 'You have no recorded punches',
   'NOT_AUTHORIZED' => 'Not Authorized!',
   'OUT' => 'Out',
+  'PAGE' => 'Page',
   'IN' => 'In',
   'ADD_USER' => 'Add User',
   'ADD_USER_DESC' => 'All fields are required!  Username and email must be unique.  Minimum password length is ',
@@ -24,7 +25,9 @@ function lang($phrase){
   'ACCOUNT' => 'Account',
   'META_DESC' => 'YAPTC Timecard system is a time recording application for small businesses.',
   'USERS' => 'Manage Users',
+  'SAVE_PUNCH_WARNING' => 'Are you sure you want to save the edit to this user punch?',
   'SAVE' => 'Save',
+  'DELETE' => 'Delete',
   'NEW' => 'New',
   'NAME' => 'Name',
   'CONFIRM' => 'Confirm',
@@ -51,6 +54,8 @@ function lang($phrase){
   'EMAIL' => 'E-Mail',
   'USER_INFORMATION' => 'User Information',
   'PUNCH_EDITOR' => 'Punch Edit',
+  'EDIT_PUNCH_HEADER' => 'User Punches',
+  'EDIT_PUNCH_DESC' => 'Edit or delete existing punches for users if needed.  WARNING - there is NO UNDO for these actions!!!',
   'PLEASE_LOG_IN' => 'Please log in to use the timecard system',
   'REPORTS' => 'Reports',
   'SINCE' => 'since',
@@ -72,6 +77,9 @@ $timenow = date('Y-m-d H:i:s');
 
 // This Version
 $yaptc_version = 'yaptc 0.8-beta';
+
+// Timezone from config
+date_default_timezone_set("$timezone");
 
 // Get user list for users management page
 function listUsers($yaptc_db) {
@@ -162,10 +170,8 @@ function getPunchStatus($yaptc_db, $userid)
     return array ($result['punchid'], $result['userid'], $result['intime'], $result['outtime'], $result['notes']);
 }
 
-
-
-// List punches sorted by intime.  Pass uid or % for all.  Pass limit to restrict row results.  Default is set to tons of 9's because no wildcard exists for limit in mysql or pgsql
-function listPunches($db, $uid, $limit = "999999999999999") {
+// List punches sorted by intime.  Pass uid or % for all.  Pass limit to restrict row results.  Default is set to tons of 9's because no wildcard exists for limit in mysql or pgsql.  Limit can also include offset for pagination, i.e. "20,10" for a result of 10 records starting 20 records in
+function listPunches($db, $uid, $limit = "999999999999999", $offset = "0") {
     $stmt = $db->prepare('
         SELECT
         ROUND(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600,2) AS punchhours,
@@ -181,17 +187,18 @@ function listPunches($db, $uid, $limit = "999999999999999") {
         INNER JOIN yaptc.users ON punches.userid = users.id
         WHERE users.id LIKE :uid
         ORDER BY punches.intime DESC
-        LIMIT :limit
+        LIMIT :limit OFFSET :offset
     ');
     $stmt->execute(array(
         ':uid' => $uid,
         ':limit' => $limit,
+        ':offset' => $offset
     ));
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Get user info from user id.  Pass uid or % for all.
-function getUserInfo($db, $uid) {
+function getUserInfo($db, $uid, $limit = "999999999999999", $offset = "0") {
     $stmt = $db->prepare('
         SELECT
         users.id AS userid,
@@ -206,10 +213,13 @@ function getUserInfo($db, $uid) {
         FROM yaptc.users
         INNER JOIN yaptc.usertypes ON users.usertype = usertypes.id
         WHERE users.id LIKE :uid
-        ORDER BY users.lastname ASC;
+        ORDER BY users.lastname ASC
+        LIMIT :limit OFFSET :offset
     ');
     $stmt->execute(array(
-        ':uid' => $uid
+        ':uid' => $uid,
+        ':limit' => $limit,
+        ':offset' => $offset
     ));
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

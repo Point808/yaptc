@@ -29,6 +29,19 @@ setUserInfo($db, $session_user["0"]["userid"], $_POST['firstname'], $_POST['last
         header('Location: ' . $_SERVER['PHP_SELF']);
 endif;
 endif;
+
+// Set up pagination
+$page_num = 1;
+if(!empty($_GET['pnum'])):
+    $page_num = filter_input(INPUT_GET, 'pnum', FILTER_VALIDATE_INT);
+    if(false === $page_num):
+        $page_num = 1;
+    endif;
+endif;
+$offset = ($page_num - 1) * $rowsperpage;
+$row_count = count(listPunches($db, $session_user["0"]["userid"]));
+$page_count = 0;
+if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
                     <h2 class="content-subhead"><?php echo lang('ACCOUNT_INFO_HEADER'); ?></h2>
@@ -66,12 +79,16 @@ endif;
                     </form>
                     <h2 class="content-subhead"><?php echo lang('PUNCH_HISTORY_HEADER'); ?></h2>
                     <p><?php echo lang('PUNCH_HISTORY_DESC'); ?></p>
-                    <table class="pure-table">
+
+
+
+                    <table class="pure-table pure-table-striped">
                         <thead>
+                            <tr><th colspan="4"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
                             <tr><th><?php echo lang('IN') . " / " . lang('OUT'); ?></th><th><?php echo lang('HOURS'); ?></th><th><?php echo lang('FLAG'); ?></th><th><?php echo lang('NOTES'); ?></th></tr>
                         </thead>
                         <tbody>
-<?php foreach (listPunches($db, $session_user["0"]["userid"]) as $row): ?>
+<?php foreach (listPunches($db, $session_user["0"]["userid"], $rowsperpage, $offset) as $row): ?>
                             <tr>
                                 <td><?php echo $row['intime'] . " / " . $row['outtime']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><?php echo $row['notes']; ?></td>
                             </tr>

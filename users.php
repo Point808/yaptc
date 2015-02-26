@@ -67,46 +67,43 @@ if (!empty($_POST['newuser']) && empty($errors)):
         <?php if (isset($message)): ?>
         <p class="success"><?php echo $message; ?></p>
         <?php endif; ?>
-
-        <!-- Note that we're again checking that each array key exists before
-             trying to use it, in order to prevent undefined index notices. -->
         <?php if (isset($errors['registration'])): ?>
         <p class="error"><?php echo $errors['registration']; ?></p>
         <?php endif; ?>
 
-        <form class="pure-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <fieldset id="registration" class="pure-group">
-        <div class="pure-g">
-            <div class="pure-u-1 pure-u-md-1-3">
-                <input type="text" class="pure-input" id="firstname" name="firstname" placeholder="First Name" required />
-                    <?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
-                <input type="text" class="pure-input" id="lastname" name="lastname" placeholder="Last Name" required />
-                    <?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
-</div>
-            <div class="pure-u-1 pure-u-md-1-3">
-                <input type="text" class="pure-input" id="username" name="username" placeholder="Username" required />
-                    <?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
-
-                <input type="text" class="pure-input" id="email" name="email" placeholder="Email" />
-                    <?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
-</div>
-            <div class="pure-u-1 pure-u-md-1-3">
-                <input type="password" class="pure-input" id="password" name="password" placeholder="Password" required />
-                    <?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
-                <input type="password" class="pure-input" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
-                    <?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
-</div>
-            <div class="pure-u-1 pure-u-md-1">
-                <label for="usertype">Access Level</label>
-                <select id="usertype" name="usertype" required>
-<option value="00000000002" selected>User</option>
-<option value="00000000001">Administrator</option>
-</select>
-                    <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
-<button type="submit" class="pure-button button-success" value="Submit" name="newuser">Create</button>
-</div>
-            </fieldset>
-        </form>
+                    <form class="pure-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                        <fieldset id="registration" class="pure-group">
+                            <div class="pure-g">
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <input type="text" class="pure-input" id="firstname" name="firstname" placeholder="First Name" required />
+<?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
+                                    <input type="text" class="pure-input" id="lastname" name="lastname" placeholder="Last Name" required />
+<?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <input type="text" class="pure-input" id="username" name="username" placeholder="Username" required />
+<?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
+                                    <input type="text" class="pure-input" id="email" name="email" placeholder="Email" />
+<?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-3">
+                                    <input type="password" class="pure-input" id="password" name="password" placeholder="Password" required />
+<?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
+                                    <input type="password" class="pure-input" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
+<?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1">
+                                    <label for="usertype">Access Level</label>
+                                    <select id="usertype" name="usertype" required>
+                                        <option value="00000000002" selected>User</option>
+                                        <option value="00000000001">Administrator</option>
+                                    </select>
+<?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
+                                    <button type="submit" class="pure-button button-success" value="Submit" name="newuser">Create</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
 
 <?php
 
@@ -120,25 +117,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE' || ($_SERVER['REQUEST_METHOD'] == 'PO
 $deletequery = $yaptc_db->prepare("DELETE FROM users WHERE users.id=$deleteid");
 $deletequery->execute();
 echo "user deleted!";
-    if ($deletequery !== false) {
+        header('Location: ' . $_SERVER['PHP_SELF']);
 
-        header("Location: {$_SERVER['PHP_SELF']}", true, 303);
-        exit;
-    }
 }
 }
 
-
+// Set up pagination
+$page_num = 1;
+if(!empty($_GET['pnum'])):
+    $page_num = filter_input(INPUT_GET, 'pnum', FILTER_VALIDATE_INT);
+    if(false === $page_num):
+        $page_num = 1;
+    endif;
+endif;
+$offset = ($page_num - 1) * $rowsperpage;
+$row_count = count(getUserInfo($db, "%"));
+$page_count = 0;
+if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
                     <h2 class="content-subhead"><?php echo lang('USER_LIST_HEADER'); ?></h2>
                     <p><?php echo lang('USER_LIST_DESC'); ?></p>
-                    <table class="pure-table">
+                    <table class="pure-table pure-table-striped">
                         <thead>
+                            <tr><th colspan="6"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
                             <tr><th><?php echo lang('NAME'); ?></th><th><?php echo lang('USERNAME'); ?></th><th><?php echo lang('EMAIL'); ?></th><th><?php echo lang('CREATED'); ?></th><th><?php echo lang('USERTYPE'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                         </thead>
                         <tbody>
-<?php foreach (getUserInfo($db, "%") as $row): ?>
+<?php foreach (getUserInfo($db, "%", $rowsperpage, $offset) as $row): ?>
                             <tr>
                                 <td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['email']; ?></td><td><?php echo $row['created']; ?></td><td><?php echo $row['usertype']; ?></td><td><form method="post" onsubmit="return confirm('<?php echo lang('DELETE_WARNING'); ?>')"><input type="hidden" id="_METHOD" name="_METHOD" value="DELETE" /><input type="hidden" id="deleteid" name="deleteid" value="<?php echo $row['userid']; ?>" /><button class="button-error pure-button" id="deluser" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>>Delete</button></form></td>
                             </tr>
