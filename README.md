@@ -30,8 +30,5 @@ We track time in this application by punching start and end times on each record
 ### Setup Instructions: ###
 1. Go to your webserver root as a user with write privileges (i.e. /usr/share/nginx/html)  
 2. Decide what sub-directory you want the app in.  I use "timecard" here.  
-3. Run the following  
-```
-git clone https://github.com/joshnorth/yaptc.git timecard
-```  
-4. 
+3. Run the following `git clone https://github.com/joshnorth/yaptc.git timecard`  
+4. t
