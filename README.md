@@ -3,6 +3,10 @@
 Josh North - josh.north@point808.com - 2015-02-09  
 This is a basic timekeeping application that is steadily getting more complex.  It may or may not work for you but I'm pretty proud of it.  
 
+### Demo: ###
+The demo username/password is admin/admin.  It is fully functional with the exception of changing the admin password.  
+http://www.point808.com/timecard  
+
 ### License ###
 Free for use and modification.  Credit is appreciated if you do anything with it but nothing is required.  
 
@@ -33,6 +37,6 @@ We track time in this application by punching start and end times on each record
 3. Run the following `git clone https://github.com/joshnorth/yaptc.git timecard`  
 4. Change to the new directory and copy the config.inc.php.example file to config.inc.php  
 5. Edit the config.inc.php top section variables to suit your environment.  
-6. Use your MySQL management interface of choice to import the mysql.sql file to your database server.  It will create a database named "yaptc". You also need to probably make a user with permissions on that database and that database alone to use in the config file so that this app does not have root mysql permissions!!!  
+6. Use your MySQL management interface of choice to import the mysql.sql file to your database server.  It will create a database named "yaptc". You also need to probably make a user with permissions on that database and that database alone to use in the config file so that this app does not have root mysql permissions!!!  Note also - I had trouble importing with some tools.  In the end, I used the mysql command line tool and just copied/pasted the text in.  
 7. Open the time card app.  Login with the default user/pass of "admin" and "admin".  
 8. Go for it. Create new users, etc etc etc.  
