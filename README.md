@@ -31,4 +31,8 @@ We track time in this application by punching start and end times on each record
 1. Go to your webserver root as a user with write privileges (i.e. /usr/share/nginx/html)  
 2. Decide what sub-directory you want the app in.  I use "timecard" here.  
 3. Run the following `git clone https://github.com/joshnorth/yaptc.git timecard`  
-4. t
+4. Change to the new directory and copy the config.inc.php.example file to config.inc.php  
+5. Edit the config.inc.php top section variables to suit your environment.  
+6. Use your MySQL management interface of choice to import the mysql.sql file to your database server.  It will create a database named "yaptc". You also need to probably make a user with permissions on that database and that database alone to use in the config file so that this app does not have root mysql permissions!!!  
+7. Open the time card app.  Login with the default user/pass of "admin" and "admin".  
+8. Go for it. Create new users, etc etc etc.  
