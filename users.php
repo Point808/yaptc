@@ -3,6 +3,7 @@ session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('USERS');
+$yaptc_pageicon = '<i class="fa fa-users"></i> ';
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
@@ -14,7 +15,7 @@ else: ?>
                     <h2 class="content-subhead"><?php echo lang('NOT_AUTHORIZED'); ?></h2>
 <?php endif; ?>
 
-                    <h2 class="content-subhead"><?php echo lang('ADD_USER'); ?></h2>
+                    <h2 class="content-subhead"><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></h2>
                     <p><?php echo lang('ADD_USER_DESC') . $yaptc_min_password; ?></p>
 
 <?php
@@ -71,35 +72,42 @@ if (!empty($_POST['newuser']) && empty($errors)):
         <p class="error"><?php echo $errors['registration']; ?></p>
         <?php endif; ?>
 
-                    <form class="pure-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                        <fieldset id="registration" class="pure-group">
+                    <form class="pure-form pure-form-stacked" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                        <fieldset id="registration">
                             <div class="pure-g">
-                                <div class="pure-u-1 pure-u-md-1-3">
-                                    <input type="text" class="pure-input" id="firstname" name="firstname" placeholder="First Name" required />
+                                <div class="pure-u-1 pure-u-sm-1-4">
+                                    <input type="text" class="pure-input pure-u-23-24" id="firstname" name="firstname" placeholder="First Name" required />
 <?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
-                                    <input type="text" class="pure-input" id="lastname" name="lastname" placeholder="Last Name" required />
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <input type="text" class="pure-input pure-u-23-24" id="lastname" name="lastname" placeholder="Last Name" required />
 <?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
                                 </div>
-                                <div class="pure-u-1 pure-u-md-1-3">
-                                    <input type="text" class="pure-input" id="username" name="username" placeholder="Username" required />
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <input type="text" class="pure-input pure-u-23-24" id="username" name="username" placeholder="Username" required />
 <?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
-                                    <input type="text" class="pure-input" id="email" name="email" placeholder="Email" />
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <input type="text" class="pure-input pure-u-23-24" id="email" name="email" placeholder="Email" />
 <?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
                                 </div>
-                                <div class="pure-u-1 pure-u-md-1-3">
-                                    <input type="password" class="pure-input" id="password" name="password" placeholder="Password" required />
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <input type="password" class="pure-input pure-u-23-24" id="password" name="password" placeholder="Password" required />
 <?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
-                                    <input type="password" class="pure-input" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <input type="password" class="pure-input pure-u-23-24" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
 <?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
                                 </div>
-                                <div class="pure-u-1 pure-u-md-1">
-                                    <label for="usertype">Access Level</label>
-                                    <select id="usertype" name="usertype" required>
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <select id="usertype" class="pure-input-23-24" name="usertype" required>
                                         <option value="00000000002" selected>User</option>
                                         <option value="00000000001">Administrator</option>
                                     </select>
 <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
-                                    <button type="submit" class="pure-button button-success" value="Submit" name="newuser">Create</button>
+                                </div>
+                                <div class="pure-u-1 pure-u-md-1-4">
+                                    <button type="submit" class="pure-button button-success pure-u-23-24" value="Submit" name="newuser"><i class="fa fa-user-plus"></i> </button>
                                 </div>
                             </div>
                         </fieldset>
@@ -136,7 +144,7 @@ $page_count = 0;
 if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
-                    <h2 class="content-subhead"><?php echo lang('USER_LIST_HEADER'); ?></h2>
+                    <h2 class="content-subhead"><i class="fa fa-list"></i> <?php echo lang('USER_LIST_HEADER'); ?></h2>
                     <p><?php echo lang('USER_LIST_DESC'); ?></p>
                     <table class="pure-table pure-table-striped">
                         <thead>
@@ -146,7 +154,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
                         <tbody>
 <?php foreach (getUserInfo($db, "%", $rowsperpage, $offset) as $row): ?>
                             <tr>
-                                <td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['email']; ?></td><td><?php echo $row['created']; ?></td><td><?php echo $row['usertype']; ?></td><td><form method="post" onsubmit="return confirm('<?php echo lang('DELETE_WARNING'); ?>')"><input type="hidden" id="_METHOD" name="_METHOD" value="DELETE" /><input type="hidden" id="deleteid" name="deleteid" value="<?php echo $row['userid']; ?>" /><button class="button-error pure-button" id="deluser" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>>Delete</button></form></td>
+                                <td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['email']; ?></td><td><?php echo $row['created']; ?></td><td><?php echo $row['usertype']; ?></td><td><form method="post" onsubmit="return confirm('<?php echo lang('DELETE_WARNING'); ?>')"><input type="hidden" id="_METHOD" name="_METHOD" value="DELETE" /><input type="hidden" id="deleteid" name="deleteid" value="<?php echo $row['userid']; ?>" /><button class="button-error pure-button" id="deluser" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>><i class="fa fa-trash"></i> </button></form></td>
                             </tr>
 <?php endforeach; ?>
                         </tbody>

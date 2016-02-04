@@ -3,6 +3,7 @@ session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('LOGOUT');
+$yaptc_pageicon = '<i class="fa fa-sign-out"></i> ';
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):

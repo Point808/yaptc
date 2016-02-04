@@ -3,6 +3,7 @@ session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = "Reports";
+$yaptc_pageicon = '<i class="fa fa-newspaper-o"></i> ';
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
@@ -11,16 +12,15 @@ else: ?>
 <!-- ********** BEGIN CONTENT ********** -->
 
 <?php if ($session_user["0"]["usertype"] == "Administrator"): ?>
-<h2 class="content-subhead">History Reports</h2>
+<h2 class="content-subhead"><i class="fa fa-history"></i> Historical Reports</h2>
 <p>The drop-down below can be used to select pre-configured reports.  Other reports are currently being written.</p>
 <form class="pure-form pure-form-stacked" action="reports.php" method="post">
 <fieldset>
 <div class="pure-g">
-<div class="pure-u-1">
-<label for="reporttype">Report Type</label>
+<div class="pure-u-1 pure-u-md-1-2">
 <select name="reporttype" class="pure-input-1-2">
 <?php if (isset($_POST['reporttype'])): ?>
-    <option value="<?php echo $_POST['reporttype']; ?>"><?php echo $_POST['reporttype']; ?></option>
+    <option value="<?php echo $_POST['reporttype']; ?>" placeholder="Report Type"><?php echo $_POST['reporttype']; ?></option>
     <option>----------</option>
 <?php else: ?>
     <option></option>
@@ -30,8 +30,10 @@ else: ?>
 <option value="All Punches">All Punches</option>
 </select>
 </div>
+<div class="pure-u-1 pure-u-md-1-2">
+<button type="submit" class="pure-button button-success pure-input-1-2"><i class="fa fa-play-circle"></i></button>
 </div>
-<button type=\"submit\" class=\"pure-button pure-button-primary\">Submit</button>
+</div>
 </fieldset>
 </form>
 

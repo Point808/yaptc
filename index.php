@@ -3,6 +3,7 @@ session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('HOME');
+$yaptc_pageicon = '<i class="fa fa-home"></i>';
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
@@ -53,10 +54,10 @@ if ($yaptc_allowuseradvancedpunch == "no"): ?>
                     <h2 class="content-subhead"><?php echo lang('QUICK_PUNCH'); ?></h2>
                     <p><?php echo $session_message; ?></p>
                     <p><?php echo lang('QUICK_PUNCH_PARAGRAPH'); ?></p>
-                    <form class="pure-form pure-form-stacked" action="index.php" method="post">
+                    <form class="pure-form" action="index.php" method="post">
                         <fieldset>
                             <input type="text" name="notes" placeholder="<?php echo lang('NOTES_PLACEHOLDER'); ?>" maxlength="255" value="<?php if (isset($notes)): echo $notes; endif; ?>" />
-                            <button type="submit" class="pure-button <?php echo lang('PUNCH') . " "; if ($session_status == lang('IN')): echo "button-error"; elseif ($session_status == lang('OUT')): echo "button-success"; endif;?>" name="quickpunch"><?php echo lang('PUNCH') . " "; if ($session_status == lang('IN')): echo lang('OUT'); elseif ($session_status == lang('OUT')): echo lang('IN'); endif;?></button>
+                            <button type="submit" class="pure-button <?php if ($session_status == lang('IN')): echo "button-error"; elseif ($session_status == lang('OUT')): echo "button-success"; endif;?>" name="quickpunch"><?php if ($session_status == lang('IN')): echo '<i class="fa fa-stop-circle"></i>'; elseif ($session_status == lang('OUT')): echo '<i class="fa fa-play-circle"></i>'; endif;?></button>
                         </fieldset>
                     </form>
 
@@ -66,11 +67,11 @@ elseif ($yaptc_allowuseradvancedpunch == "yes"): ?>
                     <h2 class="content-subhead"><?php echo lang('ADVANCED_PUNCH'); ?></h2>
                     <p><?php echo $session_message; ?></p>
                     <p><?php echo lang('ADVANCED_PUNCH_PARAGRAPH'); ?></p>
-                    <form class="pure-form pure-form-stacked" action="index.php" method="post">
+                    <form class="pure-form" action="index.php" method="post">
                         <fieldset>
                             <input type="text" name="punchtime" placeholder="<?php echo $timenow; ?>" />
                             <input type="text" name="notes" placeholder="<?php echo lang('NOTES_PLACEHOLDER'); ?>" maxlength="255" value="<?php if (isset($notes)): echo $notes; endif; ?>" />
-                            <button type="submit" class="pure-button <?php echo lang('PUNCH') . " "; if ($session_status == lang('IN')): echo "button-error"; elseif ($session_status == lang('OUT')): echo "button-success"; endif;?>" name="advancedpunch"><?php echo lang('PUNCH') . " "; if ($session_status == lang('IN')): echo lang('OUT'); elseif ($session_status == lang('OUT')): echo lang('IN'); endif;?></button>
+                            <button type="submit" class="pure-button <?php if ($session_status == lang('IN')): echo "button-error"; elseif ($session_status == lang('OUT')): echo "button-success"; endif;?>" name="advancedpunch"><?php if ($session_status == lang('IN')): echo '<i class="fa fa-stop-circle"></i>'; elseif ($session_status == lang('OUT')): echo '<i class="fa fa-play-circle"></i>'; endif;?></button>
                         </fieldset>
                     </form>
 

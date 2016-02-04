@@ -3,6 +3,7 @@ session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('PUNCH_EDITOR');
+$yaptc_pageicon = '<i class="fa fa-clock-o"></i> ';
 require_once($yaptc_inc . "header.inc.php");
 require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
@@ -69,7 +70,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
 
 
 
-                    <h2 class="content-subhead"><?php echo lang('EDIT_PUNCH_HEADER'); ?></h2>
+                    <h2 class="content-subhead"><i class="fa fa-pencil"></i> <?php echo lang('EDIT_PUNCH_HEADER'); ?></h2>
                     <p><?php echo lang('EDIT_PUNCH_DESC'); ?></p>
                     <form method="post" onsubmit="return confirm('<?php echo lang('SAVE_PUNCH_WARNING'); ?>')">
                         <table class="pure-table pure-table-striped">
@@ -80,8 +81,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
                             <tbody>
 <?php foreach (listPunches($db, "%", $rowsperpage, $offset) as $row): ?>
                                 <tr>
-                                    <td><input type="text" name="<?php echo $row['punchid']; ?>-intime" value="<?php echo $row['intime']; ?>" /><input type="text" name="<?php echo $row['punchid']; ?>-outtime" value="<?php echo $row['outtime']; ?>" /></td><td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><input type="text" name="<?php echo $row['punchid']; ?>-notes" value="<?php echo $row['notes']; ?>" /></td><td><button type="submit" name="editpunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-success"><?php echo lang('SAVE'); ?></button><button type="submit" name="deletepunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-error"><?php echo lang('DELETE'); ?></button></td>
-
+                                    <td><input type="text" name="<?php echo $row['punchid']; ?>-intime" value="<?php echo $row['intime']; ?>" /><input type="text" name="<?php echo $row['punchid']; ?>-outtime" value="<?php echo $row['outtime']; ?>" /></td><td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><input type="text" name="<?php echo $row['punchid']; ?>-notes" value="<?php echo $row['notes']; ?>" /></td><td><nobr><button type="submit" name="editpunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-success"><i class="fa fa-floppy-o fa-lg"></i></button> <button type="submit" name="deletepunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-error"><i class="fa fa-trash-o fa-lg"></i></button></nobr></td>
                                 </tr>
 <?php endforeach; ?>
                             </tbody>
