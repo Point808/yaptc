@@ -10,11 +10,26 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('HOME');
 $yaptc_pageicon = '<i class="fa fa-home"></i>';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>
                     <!-- ********** BEGIN CONTENT ********** -->
+
+
+
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h2><?php echo $yaptc_pageicon; echo $yaptc_pagename; ?></h2>
+      </div>
+      <p class="lead"><?php if (isset($_SESSION['user_id'])): echo lang('USER') . ": " . $session_user["0"]["firstname"] . ' ' . $session_user["0"]["lastname"]; else: echo lang('PLEASE_LOG_IN'); endif; ?></p>
+      <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+    </div>
+
+
+
+
+
 <?php
 // Get punch status for buttons and times
 $session_punch = listPunches($yaptc_db, $session_user["0"]["userid"], 1);

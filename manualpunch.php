@@ -5,7 +5,6 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('PUNCH_EDITOR');
 $yaptc_pageicon = '<i class="fa fa-clock-o"></i> ';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>

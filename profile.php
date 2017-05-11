@@ -5,7 +5,6 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('ACCOUNT');
 $yaptc_pageicon = '<i class="fa fa-cog"></i> ';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>
