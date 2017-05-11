@@ -1,6 +1,11 @@
 <?php
 session_start();
-require_once("config.inc.php");
+if(file_exists("config.inc.php")){
+  require_once("config.inc.php");
+}else{
+echo "Configuration file not found - please complete setup before continuing.";
+exit;
+}
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('HOME');
 $yaptc_pageicon = '<i class="fa fa-home"></i>';
@@ -12,7 +17,7 @@ else: ?>
                     <!-- ********** BEGIN CONTENT ********** -->
 <?php
 // Get punch status for buttons and times
-$session_punch = listPunches($db, $session_user["0"]["userid"], 1);
+$session_punch = listPunches($yaptc_db, $session_user["0"]["userid"], 1);
 if (!isset($session_punch['0']['intime'])):
     $session_status = lang('OUT');
     $session_message = lang('PUNCH_STATUS') . ": " . lang('NO_PUNCHES');

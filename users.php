@@ -138,10 +138,10 @@ if(!empty($_GET['pnum'])):
         $page_num = 1;
     endif;
 endif;
-$offset = ($page_num - 1) * $rowsperpage;
-$row_count = count(getUserInfo($db, "%"));
+$offset = ($page_num - 1) * $yaptc_rowsperpage;
+$row_count = count(getUserInfo($yaptc_db, "%"));
 $page_count = 0;
-if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
+if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
                     <h2 class="content-subhead"><i class="fa fa-list"></i> <?php echo lang('USER_LIST_HEADER'); ?></h2>
@@ -152,7 +152,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
                             <tr><th><?php echo lang('NAME'); ?></th><th><?php echo lang('USERNAME'); ?></th><th><?php echo lang('EMAIL'); ?></th><th><?php echo lang('CREATED'); ?></th><th><?php echo lang('USERTYPE'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                         </thead>
                         <tbody>
-<?php foreach (getUserInfo($db, "%", $rowsperpage, $offset) as $row): ?>
+<?php foreach (getUserInfo($yaptc_db, "%", $yaptc_rowsperpage, $offset) as $row): ?>
                             <tr>
                                 <td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['username']; ?></td><td><?php echo $row['email']; ?></td><td><?php echo $row['created']; ?></td><td><?php echo $row['usertype']; ?></td><td><form method="post" onsubmit="return confirm('<?php echo lang('DELETE_WARNING'); ?>')"><input type="hidden" id="_METHOD" name="_METHOD" value="DELETE" /><input type="hidden" id="deleteid" name="deleteid" value="<?php echo $row['userid']; ?>" /><button class="button-error pure-button" id="deluser" name="deluser" value="deluser" type="submit" <?php if ($row['username'] == "admin"): echo "disabled"; endif; ?>><i class="fa fa-trash"></i> </button></form></td>
                             </tr>

@@ -1,5 +1,5 @@
 <?php
-if (isset($_SESSION['user_id'])): $session_user = getUserInfo($db, $_SESSION['user_id'], "1", "0"); endif;
+if (isset($_SESSION['user_id'])): $session_user = getUserInfo($yaptc_db, $_SESSION['user_id'], "1", "0"); endif;
 $session_status = getSessionStatus();
 ?>
             <!-- SIDE MENU -->

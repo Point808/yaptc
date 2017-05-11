@@ -48,10 +48,10 @@ header('Location: '.$_SERVER['PHP_SELF']);
 
 <?php 
 if (!empty($_POST['editpunch'])) {
-editPunch($db, $_POST['editpunch'], $_POST[$_POST['editpunch'] . "-intime"], $_POST[$_POST['editpunch'] . "-outtime"], $_POST[$_POST['editpunch'] . "-notes"]);
+editPunch($yaptc_db, $_POST['editpunch'], $_POST[$_POST['editpunch'] . "-intime"], $_POST[$_POST['editpunch'] . "-outtime"], $_POST[$_POST['editpunch'] . "-notes"]);
 }
 if (!empty($_POST['deletepunch'])) {
-deletePunch($db, $_POST['deletepunch']);
+deletePunch($yaptc_db, $_POST['deletepunch']);
 }
 
 // Set up pagination
@@ -62,10 +62,10 @@ if(!empty($_GET['pnum'])):
         $page_num = 1;
     endif;
 endif;
-$offset = ($page_num - 1) * $rowsperpage;
-$row_count = count(listPunches($db, "%"));
+$offset = ($page_num - 1) * $yaptc_rowsperpage;
+$row_count = count(listPunches($yaptc_db, "%"));
 $page_count = 0;
-if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
+if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
 
@@ -79,7 +79,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
                                 <tr><th><?php echo lang('IN') . "/" . lang('OUT'); ?></th><th><?php echo lang('NAME'); ?></th><th><?php echo lang('HOURS'); ?></th><th><?php echo lang('FLAG'); ?></th><th><?php echo lang('NOTES'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                             </thead>
                             <tbody>
-<?php foreach (listPunches($db, "%", $rowsperpage, $offset) as $row): ?>
+<?php foreach (listPunches($yaptc_db, "%", $yaptc_rowsperpage, $offset) as $row): ?>
                                 <tr>
                                     <td><input type="text" name="<?php echo $row['punchid']; ?>-intime" value="<?php echo $row['intime']; ?>" /><input type="text" name="<?php echo $row['punchid']; ?>-outtime" value="<?php echo $row['outtime']; ?>" /></td><td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><input type="text" name="<?php echo $row['punchid']; ?>-notes" value="<?php echo $row['notes']; ?>" /></td><td><nobr><button type="submit" name="editpunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-success"><i class="fa fa-floppy-o fa-lg"></i></button> <button type="submit" name="deletepunch" value="<?php echo $row['punchid']; ?>" class="pure-button button-error"><i class="fa fa-trash-o fa-lg"></i></button></nobr></td>
                                 </tr>

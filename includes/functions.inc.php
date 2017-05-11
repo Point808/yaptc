@@ -76,10 +76,10 @@ function lang($phrase){
 $timenow = date('Y-m-d H:i:s');
 
 // This Version
-$yaptc_version = 'yaptc 0.8-beta';
+$yaptc_version = 'yaptc 0.9-beta';
 
 // Timezone from config
-date_default_timezone_set("$timezone");
+date_default_timezone_set("$yaptc_timezone");
 
 // Get user list for users management page
 function listUsers($yaptc_db) {
@@ -171,8 +171,8 @@ function getPunchStatus($yaptc_db, $userid)
 }
 
 // List punches sorted by intime.  Pass uid or % for all.  Pass limit to restrict row results.  Default is set to tons of 9's because no wildcard exists for limit in mysql or pgsql.  Limit can also include offset for pagination, i.e. "20,10" for a result of 10 records starting 20 records in
-function listPunches($db, $uid, $limit = "999999999999999", $offset = "0") {
-    $stmt = $db->prepare('
+function listPunches($yaptc_db, $uid, $limit = "999999999999999", $offset = "0") {
+    $stmt = $yaptc_db->prepare('
         SELECT
         ROUND(TIME_TO_SEC(TIMEDIFF(punches.outtime, punches.intime))/3600,2) AS punchhours,
         punches.id as punchid,
@@ -198,8 +198,8 @@ function listPunches($db, $uid, $limit = "999999999999999", $offset = "0") {
 }
 
 // Get user info from user id.  Pass uid or % for all.
-function getUserInfo($db, $uid, $limit = "999999999999999", $offset = "0") {
-    $stmt = $db->prepare('
+function getUserInfo($yaptc_db, $uid, $limit = "999999999999999", $offset = "0") {
+    $stmt = $yaptc_db->prepare('
         SELECT
         users.id AS userid,
         users.username AS username,
@@ -238,8 +238,8 @@ $stmt->execute(array(
 
 
 // Set user info from user id
-function setUserInfo($db, $uid, $firstname, $lastname, $email, $usertypeid, $password) {
-    $stmt = $db->prepare('
+function setUserInfo($yaptc_db, $uid, $firstname, $lastname, $email, $usertypeid, $password) {
+    $stmt = $yaptc_db->prepare('
         UPDATE
         yaptc.users
         SET
