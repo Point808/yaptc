@@ -13,7 +13,7 @@ else: ?>
 <?php
 if (isset($_POST['saveprofile'])):
     if (empty($_POST['password']) && empty($_POST['newpassword2'])):
-        setUserInfo($db, $session_user["0"]["userid"], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $session_user["0"]["usertypeid"], $session_user["0"]["password"]);
+        setUserInfo($yaptc_db, $session_user["0"]["userid"], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $session_user["0"]["usertypeid"], $session_user["0"]["password"]);
         header('Location: ' . $_SERVER['PHP_SELF']);
 elseif (strlen($_POST['password']) < $yaptc_min_password):
 echo "Password must be at least $yaptc_min_password characters.";
@@ -26,7 +26,7 @@ elseif (!empty($_POST['password']) && ($_POST['password'] = $_POST['newpassword2
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
     $hasher = new PasswordHash(8, FALSE);
     $password = $hasher->HashPassword($_POST['password']);
-setUserInfo($db, $session_user["0"]["userid"], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $session_user["0"]["usertypeid"], $password);
+setUserInfo($yaptc_db, $session_user["0"]["userid"], $_POST['firstname'], $_POST['lastname'], $_POST['email'], $session_user["0"]["usertypeid"], $password);
         header('Location: ' . $_SERVER['PHP_SELF']);
 endif;
 endif;
@@ -39,10 +39,10 @@ if(!empty($_GET['pnum'])):
         $page_num = 1;
     endif;
 endif;
-$offset = ($page_num - 1) * $rowsperpage;
-$row_count = count(listPunches($db, $session_user["0"]["userid"]));
+$offset = ($page_num - 1) * $yaptc_rowsperpage;
+$row_count = count(listPunches($yaptc_db, $session_user["0"]["userid"]));
 $page_count = 0;
-if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
+if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
                     <h2 class="content-subhead"><?php echo lang('ACCOUNT_INFO_HEADER'); ?></h2>
@@ -89,7 +89,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $rowsperpage);
                             <tr><th><?php echo lang('IN') . " / " . lang('OUT'); ?></th><th><?php echo lang('HOURS'); ?></th><th><?php echo lang('FLAG'); ?></th><th><?php echo lang('NOTES'); ?></th></tr>
                         </thead>
                         <tbody>
-<?php foreach (listPunches($db, $session_user["0"]["userid"], $rowsperpage, $offset) as $row): ?>
+<?php foreach (listPunches($yaptc_db, $session_user["0"]["userid"], $yaptc_rowsperpage, $offset) as $row): ?>
                             <tr>
                                 <td><?php echo $row['intime'] . " / " . $row['outtime']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><?php echo $row['notes']; ?></td>
                             </tr>

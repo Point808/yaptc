@@ -55,7 +55,7 @@ else: ?>
     <?php endif; ?>
     <?php if ($_POST['reporttype'] == "All Punches"): ?><table class="pure-table pure-table-striped">
         <thead><tr><th>In</th><th>Out</th><th>Name</th><th>Hours</th><th>Flagged</th><th>Notes</th></tr></thead>
-        <tbody><?php foreach (listPunches($db, "%") as $row): ?>
+        <tbody><?php foreach (listPunches($yaptc_db, "%") as $row): ?>
         <tr><td><?php echo $row['intime']; ?></td><td><?php echo $row['outtime']; ?></td><td><?php echo $row['lastname'] . ", " . $row['firstname']; ?></td><td><?php echo $row['punchhours']; ?></td><td><?php echo $row['modified']; ?></td><td><?php echo $row['notes']; ?></td></tr><?php endforeach; ?>
         </tbody>
         </table>

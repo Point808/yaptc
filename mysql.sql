@@ -25,8 +25,8 @@ DROP TABLE IF EXISTS `punches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `punches` (
-  `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `userid` int(11) unsigned zerofill NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(11) unsigned NOT NULL,
   `notes` varchar(255) DEFAULT NULL,
   `modified` tinyint(4) DEFAULT NULL,
   `intime` datetime NOT NULL,
@@ -54,14 +54,14 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(60) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `created` datetime NOT NULL,
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
-  `usertype` int(11) unsigned zerofill NOT NULL,
+  `usertype` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `users_ibfk_1` (`usertype`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`usertype`) REFERENCES `usertypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -74,7 +74,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (00000000001,'admin','$2a$08$6WUE0S4UEYJO5.GMoCzjAO.W8y4Gage/tC7.SWEppWxwQO2ccjMgy','admin@example.com','2015-02-18 19:50:31','System','Administrator',00000000001);
+INSERT INTO `users` VALUES (1,'admin','$2a$08$6WUE0S4UEYJO5.GMoCzjAO.W8y4Gage/tC7.SWEppWxwQO2ccjMgy','admin@example.com','2015-02-18 19:50:31','System','Administrator',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +86,7 @@ DROP TABLE IF EXISTS `usertypes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usertypes` (
-  `id` int(11) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `typename` varchar(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
@@ -98,7 +98,7 @@ CREATE TABLE `usertypes` (
 
 LOCK TABLES `usertypes` WRITE;
 /*!40000 ALTER TABLE `usertypes` DISABLE KEYS */;
-INSERT INTO `usertypes` VALUES (00000000001,'Administrator'),(00000000002,'User');
+INSERT INTO `usertypes` VALUES (1,'Administrator'),(2,'User');
 /*!40000 ALTER TABLE `usertypes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
