@@ -20,8 +20,8 @@ $yaptc_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Advanced 
 $yaptc_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);         // Advanced PDO handling
 $_SESSION['yaptc_dir'] = $yaptc_dirpath;                            // Put absolute directory path in session
 $_SESSION['yaptc_url'] = $yaptc_webpath;                            // Put absolute url path in session
-$yaptc_inc             = $yaptc_dirpath . 'includes/';              // Concatenate an includes directory path
-$yaptc_incweb          = $yaptc_webpath . 'includes/';              // Concatenate an includes url path
+$yaptc_inc             = $yaptc_dirpath . 'inc/';              // Concatenate an includes directory path
+$yaptc_incweb          = $yaptc_webpath . 'inc/';              // Concatenate an includes url path
 $yaptc_lib             = $yaptc_dirpath . 'lib/';                   // Concatenate a lib directory path
 $yaptc_libweb          = $yaptc_webpath . 'lib/';                   // Concatenate a lib url path
 $yaptc_lang            = $yaptc_dirpath . 'lang/' . $yaptc_language . 'lang.php'; // Concatenate a language url path

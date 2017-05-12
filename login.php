@@ -2,6 +2,7 @@
 session_start();
 require_once("config.inc.php");
 require_once($yaptc_inc . "functions.inc.php");
+require_once($yaptc_lang);
 $yaptc_pagename = lang('LOGIN');
 $yaptc_pageicon = '<i class="fa fa-sign-in"></i> ';
 require_once($yaptc_inc . "header.inc.php");
@@ -43,6 +44,9 @@ endif;
         <input type="password" id="password" name="password" class="form-control" placeholder="<?php echo lang('PASSWORD'); ?>" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="login"><?php echo lang('LOGIN'); ?></button>
       </form>
+
+<?php echo lang('LOGIN'); ?>
+
     </div>
 
 <!-- ********** END CONTENT ********** -->
