@@ -37,3 +37,8 @@ We track time in this application by punching start and end times on each record
 
 ### Screenshots: ###
 ![Login Page] (https://git.point808.com/attachments/7381ee2d-3bb5-4430-9c37-29527f8bfa4f)  
+![Home Punch] (https://git.point808.com/attachments/5b762048-54cf-41bf-91b0-468f333f4bae)  
+![User Profile] (https://git.point808.com/attachments/4b13b0f1-d6ff-4445-93ad-6e699fdba075)  
+![Manage Users] (https://git.point808.com/attachments/24ab13eb-d32e-4b25-89e1-88edc2e9cbf2)  
+![Punch Editor] (https://git.point808.com/attachments/ec4fa0e7-caa4-46d5-ab9c-d08ea55b1eb5)  
+![Reports] (https://git.point808.com/attachments/dbe6fee9-f1ad-49bb-8a30-f8e568f54e64)  
