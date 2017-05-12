@@ -3,13 +3,13 @@
 Josh North - josh.north@point808.com  
 Basic (i.e. stupidly simple) timekeeping application.  I'm working on more features but who knows if that will get released.  
 
-### Dev ###  
+### Dev: ###
 This is hosted on my server and pushed to github.  If you have questions email me, github issues aren't enabled.
 
-### License ###
+### License: ###
 Free for use and modification.  Credit is appreciated if you do anything with it but nothing is required.  
 
-### Credits ###
+### Credits: ###
 * Bootstrap - http://getbootstrap.com
 * phpass (password hashing, license included) - http://www.openwall.com/phpass/  
 * HUGE thank you to PHP Developers Network users "califdon", "Celauran", and "social_experiment" for their guide on login and registration systems at http://forums.devnetwork.net/viewtopic.php?f=28&t=135287&sid=f7140b48a14f50fd7f0340581442447b#p675168  
