@@ -78,7 +78,7 @@ function lang($phrase){
 $timenow = date('Y-m-d H:i:s');
 
 // This Version
-$yaptc_version = 'yaptc 0.9-beta';
+$yaptc_version = 'yaptc_v1.0-alpha';
 
 // Timezone from config
 date_default_timezone_set("$yaptc_timezone");
