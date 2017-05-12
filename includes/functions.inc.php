@@ -39,6 +39,7 @@ function lang($phrase){
   'CREATED' => 'Created',
   'MIN_PASSWORD_LENGTH' => 'Minimum password length is ',
   'USERTYPE' => 'User Type',
+  'EDIT_PROFILE' => 'Edit Profile',
   'ILLEGAL_CHARACTERS' => 'Username contains illegal characters',
   'PASSWORD_NOTMATCH' => 'Passwords do not match',
   'EMAIL_NOTVALID' => 'Email address not valid',

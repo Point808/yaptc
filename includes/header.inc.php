@@ -6,14 +6,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.css"/>
 	<link rel="stylesheet" href="css/animate.min.css"/>
 	<link rel="stylesheet" href="css/styles.css"/>
         <link rel="stylesheet" href="css/ie10-viewport-bug-workaround.css">
         <link rel="stylesheet" href="css/sticky-footer-navbar.css">
 	<!-- [if lt IE 9]>
-		<script src="/js/html5shiv.js" type="text/javascript"></script>
-		<script src="/js/respond.min.js" type="text/javascript"></script>
+		<script src="js/html5shiv.js" type="text/javascript"></script>
+		<script src="js/respond.min.js" type="text/javascript"></script>
 	<![endif] -->
         <meta name="description" content="<?php echo lang('META_DESC'); ?>" />
         <title><?php echo $yaptc_company . " > " . $yaptc_appname . " > " . $yaptc_pagename; ?></title>

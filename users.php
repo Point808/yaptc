@@ -127,7 +127,7 @@ if (!empty($_POST['newuser']) && empty($errors)):
 <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
 </div>
 <div class="col-sm-6">
-                                    <button type="submit" class="form-control" value="Submit" name="newuser"><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></button>
+                                    <button type="submit" class="form-control btn btn-block btn-primary" value="Submit" name="newuser"><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></button>
 </div>
 </div>
                             </div>
