@@ -39,7 +39,7 @@ We track time in this application by punching start and end times on each record
 8. Go for it. Create new users, etc etc etc.  
 
 ### Screenshots: ###
-![Login Page](/../doc/login.png?raw=true "Login Page")
+![Login Page](../doc/login.png?raw=true "Login Page")
 ![Home Punch] (https://git.point808.com/attachments/5b762048-54cf-41bf-91b0-468f333f4bae)  
 ![User Profile] (https://git.point808.com/attachments/4b13b0f1-d6ff-4445-93ad-6e699fdba075)  
 ![Manage Users] (https://git.point808.com/attachments/24ab13eb-d32e-4b25-89e1-88edc2e9cbf2)  
