@@ -39,6 +39,7 @@ function lang($phrase){
   'CREATED' => 'Created',
   'MIN_PASSWORD_LENGTH' => 'Minimum password length is ',
   'USERTYPE' => 'User Type',
+  'EDIT_PROFILE' => 'Edit Profile',
   'ILLEGAL_CHARACTERS' => 'Username contains illegal characters',
   'PASSWORD_NOTMATCH' => 'Passwords do not match',
   'EMAIL_NOTVALID' => 'Email address not valid',
@@ -64,6 +65,7 @@ function lang($phrase){
   'QUICK_PUNCH_PARAGRAPH' => 'Click below to immediately punch your time.  You may enter notes for your administrator to review.',
   'ADVANCED_PUNCH_PARAGRAPH' => 'Click the punch button to immediately punch your time.  You may also make changes to the defaults.  Note that changing the punch time will result in a flag on the punch for your administrator to review.',
   'YOU_HAVE_BEEN_PUNCHED' => 'You have been punched',
+  'REPORTS_DESC' => 'The drop-down below can be used to select pre-configured reports.  Other reports are currently being written.',
   'QUICK_PUNCH' => 'Quick Punch',
   'SOFTWARE_VERSION' => 'Software Version',
   'ADVANCED_PUNCH' => 'Advanced Punch'
@@ -76,7 +78,7 @@ function lang($phrase){
 $timenow = date('Y-m-d H:i:s');
 
 // This Version
-$yaptc_version = 'yaptc 0.9-beta';
+$yaptc_version = 'yaptc_v1.0-alpha';
 
 // Timezone from config
 date_default_timezone_set("$yaptc_timezone");

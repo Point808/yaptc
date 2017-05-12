@@ -5,7 +5,6 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('PUNCH_EDITOR');
 $yaptc_pageicon = '<i class="fa fa-clock-o"></i> ';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>
@@ -68,14 +67,16 @@ $page_count = 0;
 if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
+    <div class="container">
+      <div class="page-header">
+        <h2><i class="glyphicon glyphicon-pencil"></i> <?php echo lang('EDIT_PUNCH_HEADER'); ?></h2>
+      </div>
+      <p class="lead"><?php echo lang('EDIT_PUNCH_DESC'); ?></p>
 
-
-                    <h2 class="content-subhead"><i class="fa fa-pencil"></i> <?php echo lang('EDIT_PUNCH_HEADER'); ?></h2>
-                    <p><?php echo lang('EDIT_PUNCH_DESC'); ?></p>
                     <form method="post" onsubmit="return confirm('<?php echo lang('SAVE_PUNCH_WARNING'); ?>')">
                         <table class="pure-table pure-table-striped">
                             <thead>
-                                <tr><th colspan="6"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
+                                <tr><th colspan="6"><?php echo '<ul class="pagination pagination-sm">'; for ($i = 1; $i <= $page_count; $i++): echo '<li class="'; if ($i === $page_num): echo 'active'; else: echo ' '; endif; echo '"><a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a></li>'; endfor; echo '</ul>'; ?></th></tr>
                                 <tr><th><?php echo lang('IN') . "/" . lang('OUT'); ?></th><th><?php echo lang('NAME'); ?></th><th><?php echo lang('HOURS'); ?></th><th><?php echo lang('FLAG'); ?></th><th><?php echo lang('NOTES'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                             </thead>
                             <tbody>
@@ -87,6 +88,6 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsper
                             </tbody>
                         </table>
                     </form>
-
+</div>
                     <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

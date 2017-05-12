@@ -5,7 +5,6 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('LOGIN');
 $yaptc_pageicon = '<i class="fa fa-sign-in"></i> ';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == true):
 header('Location: index.php');
 else: ?>
@@ -35,14 +34,16 @@ if (!empty($_POST)):
 endif;
 ?>
 
-                    <h2 class="content-subhead"><?php echo lang('USER_INFORMATION'); ?></h2>
-                    <form class="pure-form" action="login.php" method="post">
-                        <fieldset class="pure-group" id="login">
-                            <input type="text" class="pure-input-1" placeholder="<?php echo lang('USERNAME'); ?>" id="username" name="username" />
-                            <input type="password" class="pure-input-1" placeholder="<?php echo lang('PASSWORD'); ?>" id="password" name="password" />
-                        </fieldset>
-                        <button type="submit" class="pure-button button-success pure-input-1 pure-button-primary" name="login"><?php echo lang('LOGIN'); ?></button>
-                    </form>
+    <div class="container">
+      <form class="form-signin" action="login.php" method="post">
+        <h2 class="form-signin-heading"><?php echo lang('PLEASE_LOG_IN'); ?></h2>
+        <label for="username" class="sr-only"><?php echo lang('EMAIL'); ?></label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="<?php echo lang('USERNAME'); ?>" required autofocus>
+        <label for="password" class="sr-only"><?php echo lang('PASSWORD'); ?></label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="<?php echo lang('PASSWORD'); ?>" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="login"><?php echo lang('LOGIN'); ?></button>
+      </form>
+    </div>
 
-                    <!-- ********** END CONTENT ********** -->
+<!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>

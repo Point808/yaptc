@@ -1,9 +1,13 @@
                 </div>
-                <div class="header">
-                    <h2><?php echo lang('SERVER_TIME') . ": " . $timenow . " - - - " . lang('SOFTWARE_VERSION') . ": " . $yaptc_version; ?></h2>
-                </div>
             </div>
         </div>
-        <script src="<?php echo $yaptc_libweb; ?>ui.js"></script>
+        <footer class="footer">
+            <div class="container">
+                <p class="text-muted"><?php echo lang('SERVER_TIME') . ": " . $timenow . " - - - " . lang('SOFTWARE_VERSION') . ": " . $yaptc_version; ?></p>
+            </div>
+        </footer>
+        <script src="js/ie10-viewport-bug-workaround.js"></script>
+        <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

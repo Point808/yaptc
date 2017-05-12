@@ -5,7 +5,6 @@ require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('USERS');
 $yaptc_pageicon = '<i class="fa fa-users"></i> ';
 require_once($yaptc_inc . "header.inc.php");
-require_once($yaptc_inc . "menu.inc.php");
 if (getSessionStatus() == false):
 killSession();
 else: ?>
@@ -15,8 +14,14 @@ else: ?>
                     <h2 class="content-subhead"><?php echo lang('NOT_AUTHORIZED'); ?></h2>
 <?php endif; ?>
 
-                    <h2 class="content-subhead"><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></h2>
-                    <p><?php echo lang('ADD_USER_DESC') . $yaptc_min_password; ?></p>
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h2><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></h2>
+      </div>
+      <p class="lead"><?php echo lang('ADD_USER_DESC') . $yaptc_min_password; ?></p>
+
+
 
 <?php
 require_once($yaptc_lib . "phpass-0.3/PasswordHash.php");
@@ -72,46 +77,67 @@ if (!empty($_POST['newuser']) && empty($errors)):
         <p class="error"><?php echo $errors['registration']; ?></p>
         <?php endif; ?>
 
-                    <form class="pure-form pure-form-stacked" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+
+
+
+
+
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                         <fieldset id="registration">
-                            <div class="pure-g">
-                                <div class="pure-u-1 pure-u-sm-1-4">
-                                    <input type="text" class="pure-input pure-u-23-24" id="firstname" name="firstname" placeholder="First Name" required />
+                            <div class="form-group">
+<div class="row">
+<div class="col-sm-6">
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required />
 <?php echo isset($errors['firstname']) ? $errors['firstname'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <input type="text" class="pure-input pure-u-23-24" id="lastname" name="lastname" placeholder="Last Name" required />
+</div>
+<div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required />
 <?php echo isset($errors['lastname']) ? $errors['lastname'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <input type="text" class="pure-input pure-u-23-24" id="username" name="username" placeholder="Username" required />
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-6">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required />
 <?php echo isset($errors['username']) ? $errors['username'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <input type="text" class="pure-input pure-u-23-24" id="email" name="email" placeholder="Email" />
+</div>
+<div class="col-sm-6">
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Email" />
 <?php echo isset($errors['email']) ? $errors['email'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <input type="password" class="pure-input pure-u-23-24" id="password" name="password" placeholder="Password" required />
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-6">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
 <?php echo isset($errors['password']) ? $errors['password'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <input type="password" class="pure-input pure-u-23-24" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
+</div>
+<div class="col-sm-6">
+                                    <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required />
 <?php echo isset($errors['password_confirm']) ? $errors['password_confirm'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <select id="usertype" class="pure-input-23-24" name="usertype" required>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-6">
+                                    <select id="usertype" class="form-control" name="usertype" required>
                                         <option value="00000000002" selected>User</option>
                                         <option value="00000000001">Administrator</option>
                                     </select>
 <?php echo isset($errors['usertype']) ? $errors['usertype'] : ''; ?>
-                                </div>
-                                <div class="pure-u-1 pure-u-md-1-4">
-                                    <button type="submit" class="pure-button button-success pure-u-23-24" value="Submit" name="newuser"><i class="fa fa-user-plus"></i> </button>
-                                </div>
+</div>
+<div class="col-sm-6">
+                                    <button type="submit" class="form-control btn btn-block btn-primary" value="Submit" name="newuser"><i class="fa fa-user-plus"></i> <?php echo lang('ADD_USER'); ?></button>
+</div>
+</div>
                             </div>
                         </fieldset>
                     </form>
+    </div>
+
+
+
+
 
 <?php
 
@@ -144,11 +170,19 @@ $page_count = 0;
 if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsperpage); if($page_num > $page_count): $page_num = 1; endif; endif;
 ?>
 
-                    <h2 class="content-subhead"><i class="fa fa-list"></i> <?php echo lang('USER_LIST_HEADER'); ?></h2>
-                    <p><?php echo lang('USER_LIST_DESC'); ?></p>
-                    <table class="pure-table pure-table-striped">
+
+
+
+    <div class="container">
+      <div class="page-header">
+        <h2><i class="fa fa-list"></i> <?php echo lang('USERS'); ?></h2>
+      </div>
+      <p class="lead"><?php echo lang('USER_LIST_DESC'); ?></p>
+
+
+                    <table class="table table-striped">
                         <thead>
-                            <tr><th colspan="6"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
+                            <tr><th colspan="6"><?php echo '<ul class="pagination pagination-sm">'; for ($i = 1; $i <= $page_count; $i++): echo '<li class="'; if ($i === $page_num): echo 'active'; else: echo ' '; endif; echo '"><a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a></li>'; endfor; echo '</ul>'; ?></th></tr>
                             <tr><th><?php echo lang('NAME'); ?></th><th><?php echo lang('USERNAME'); ?></th><th><?php echo lang('EMAIL'); ?></th><th><?php echo lang('CREATED'); ?></th><th><?php echo lang('USERTYPE'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                         </thead>
                         <tbody>
@@ -159,6 +193,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsper
 <?php endforeach; ?>
                         </tbody>
                     </table>
+    </div>
 
                     <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>
