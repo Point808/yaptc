@@ -34,3 +34,6 @@ We track time in this application by punching start and end times on each record
 6. Use your MySQL management interface of choice to import the mysql.sql file to your database server.  It will create a database named "yaptc". You also need to probably make a user with permissions on that database and that database alone to use in the config file so that this app does not have root mysql permissions!!!  Note also - I had trouble importing with some tools.  In the end, I used the mysql command line tool and just copied/pasted the text in.  
 7. Open the time card app.  Login with the default user/pass of "admin" and "admin".  
 8. Go for it. Create new users, etc etc etc.  
+
+### Screenshots: ###
+![Login Page] https://git.point808.com/attachments/7381ee2d-3bb5-4430-9c37-29527f8bfa4f  
