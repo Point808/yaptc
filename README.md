@@ -36,4 +36,4 @@ We track time in this application by punching start and end times on each record
 8. Go for it. Create new users, etc etc etc.  
 
 ### Screenshots: ###
-![Login Page] https://git.point808.com/attachments/7381ee2d-3bb5-4430-9c37-29527f8bfa4f  
+![Login Page] (https://git.point808.com/attachments/7381ee2d-3bb5-4430-9c37-29527f8bfa4f)  
