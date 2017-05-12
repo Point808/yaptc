@@ -4,7 +4,7 @@
 $timenow = date('Y-m-d H:i:s');
 
 // This Version
-$yaptc_version = 'yaptc_v1.0-alpha3';
+$yaptc_version = 'yaptc_v1.0-alpha4';
 
 // Timezone from config
 date_default_timezone_set("$yaptc_timezone");

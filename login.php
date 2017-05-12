@@ -45,8 +45,6 @@ endif;
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="login"><?php echo lang('LOGIN'); ?></button>
       </form>
 
-<?php echo lang('LOGIN'); ?>
-
     </div>
 
 <!-- ********** END CONTENT ********** -->

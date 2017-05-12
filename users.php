@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once("config.inc.php");
+require_once($yaptc_lang);
+
 require_once($yaptc_inc . "functions.inc.php");
 $yaptc_pagename = lang('USERS');
 $yaptc_pageicon = '<i class="fa fa-users"></i> ';

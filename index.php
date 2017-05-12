@@ -2,6 +2,8 @@
 session_start();
 if(file_exists("config.inc.php")){
   require_once("config.inc.php");
+require_once($yaptc_lang);
+
 }else{
 echo "Configuration file not found - please complete setup before continuing.";
 exit;
