@@ -65,6 +65,7 @@ function lang($phrase){
   'QUICK_PUNCH_PARAGRAPH' => 'Click below to immediately punch your time.  You may enter notes for your administrator to review.',
   'ADVANCED_PUNCH_PARAGRAPH' => 'Click the punch button to immediately punch your time.  You may also make changes to the defaults.  Note that changing the punch time will result in a flag on the punch for your administrator to review.',
   'YOU_HAVE_BEEN_PUNCHED' => 'You have been punched',
+  'REPORTS_DESC' => 'The drop-down below can be used to select pre-configured reports.  Other reports are currently being written.',
   'QUICK_PUNCH' => 'Quick Punch',
   'SOFTWARE_VERSION' => 'Software Version',
   'ADVANCED_PUNCH' => 'Advanced Punch'

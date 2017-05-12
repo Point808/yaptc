@@ -92,7 +92,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsper
 
                     <table class="table table-striped">
                         <thead>
-                            <tr><th colspan="4"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
+                            <tr><th colspan="4"><?php echo '<ul class="pagination pagination-sm">'; for ($i = 1; $i <= $page_count; $i++): echo '<li class="'; if ($i === $page_num): echo 'active'; else: echo ' '; endif; echo '"><a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a></li>'; endfor; echo '</ul>'; ?></th></tr>
                             <tr><th><?php echo lang('IN') . " / " . lang('OUT'); ?></th><th><?php echo lang('HOURS'); ?></th><th><?php echo lang('FLAG'); ?></th><th><?php echo lang('NOTES'); ?></th></tr>
                         </thead>
                         <tbody>

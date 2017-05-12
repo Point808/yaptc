@@ -178,17 +178,11 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsper
         <h2><i class="fa fa-list"></i> <?php echo lang('USERS'); ?></h2>
       </div>
       <p class="lead"><?php echo lang('USER_LIST_DESC'); ?></p>
-    </div>
 
 
-
-
-
-
-
-                    <table class="pure-table pure-table-striped">
+                    <table class="table table-striped">
                         <thead>
-                            <tr><th colspan="6"><?php echo lang('PAGE') . ": "; for ($i = 1; $i <= $page_count; $i++): if ($i === $page_num): echo $i . ' '; else: echo '<a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a> '; endif; endfor; ?></th></tr>
+                            <tr><th colspan="6"><?php echo '<ul class="pagination pagination-sm">'; for ($i = 1; $i <= $page_count; $i++): echo '<li class="'; if ($i === $page_num): echo 'active'; else: echo ' '; endif; echo '"><a href="' . $_SERVER['PHP_SELF'] . '?pnum=' . $i . '">' . $i . '</a></li>'; endfor; echo '</ul>'; ?></th></tr>
                             <tr><th><?php echo lang('NAME'); ?></th><th><?php echo lang('USERNAME'); ?></th><th><?php echo lang('EMAIL'); ?></th><th><?php echo lang('CREATED'); ?></th><th><?php echo lang('USERTYPE'); ?></th><th><?php echo lang('ACTIONS'); ?></th></tr>
                         </thead>
                         <tbody>
@@ -199,6 +193,7 @@ if (0 === $row_count): else: $page_count = (int)ceil($row_count / $yaptc_rowsper
 <?php endforeach; ?>
                         </tbody>
                     </table>
+    </div>
 
                     <!-- ********** END CONTENT ********** -->
 <?php endif; require_once($yaptc_inc . "footer.inc.php"); ?>
