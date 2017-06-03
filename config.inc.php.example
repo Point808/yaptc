@@ -1,0 +1,28 @@
+<?php
+//********** PLEASE EDIT THE FOLLOWING **********//
+// Paths and directories must include a trailing slash!!!
+$yaptc_dirpath  = '/var/www/html/yaptc/';         // Absolute directory path to the root of this program
+$yaptc_webpath  = 'http://server-ip/yaptc/';      // Absolute URL to the root of this program
+$yaptc_appname  = 'Timecard System';              // Program name to display in title bar
+$yaptc_company  = 'Widgets, Inc.';                // Your company name
+$yaptc_db       = new PDO('mysql:host=localhost;dbname=YOUR_DATABASE;charset=utf8', 'YOUR_USER', 'YOUR_PASSWORD'); // Database connection string
+$yaptc_allowuseradvancedpunch = 'yes';            // Should we allow users to make manual punch entries?
+$yaptc_min_password = '8';                        // Minimum password length
+$yaptc_language = 'en';                           // 2-character language code for header and template.  See http://www.w3schools.com/tags/ref_language_codes.asp
+$yaptc_timezone       = 'America/New_York';             // Primary timezone of system - eventually to work across timezones...
+$yaptc_rowsperpage    = '25';                           // How many rows per page for tables?
+
+
+
+
+//********** NO NEED TO EDIT PAST HERE **********//
+$yaptc_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Advanced PDO handling
+$yaptc_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);         // Advanced PDO handling
+$_SESSION['yaptc_dir'] = $yaptc_dirpath;                            // Put absolute directory path in session
+$_SESSION['yaptc_url'] = $yaptc_webpath;                            // Put absolute url path in session
+$yaptc_inc             = $yaptc_dirpath . 'inc/';              // Concatenate an includes directory path
+$yaptc_incweb          = $yaptc_webpath . 'inc/';              // Concatenate an includes url path
+$yaptc_lib             = $yaptc_dirpath . 'lib/';                   // Concatenate a lib directory path
+$yaptc_libweb          = $yaptc_webpath . 'lib/';                   // Concatenate a lib url path
+$yaptc_lang            = $yaptc_dirpath . 'lang/' . $yaptc_language . 'lang.php'; // Concatenate a language url path
+?>
