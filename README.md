@@ -1,4 +1,5 @@
-# YAPTC #
+![yaptc](../doc/yaptc.png?raw=true "yaptc")
+
 ### About: ###
 Josh North - josh.north@point808.com  
 Basic (i.e. stupidly simple) timekeeping application.  I'm working on more features but who knows if that will get released.  
