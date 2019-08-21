@@ -5,7 +5,7 @@ Josh North - josh.north@point808.com
 Basic (i.e. stupidly simple) timekeeping application.  I'm working on more features but who knows if that will get released.  
 
 ### Dev: ###
-This is hosted on my server and pushed to github.  If you have questions email me, github issues aren't enabled.
+*** This repository lives at https://git.point808.com and pushes to github on update.
 
 ### License: ###
 Free for use and modification.  Credit is appreciated if you do anything with it but nothing is required.  
